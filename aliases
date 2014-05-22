@@ -13,3 +13,17 @@ alias bi='bundle install'
 # Open Sublime Text with a very short command!
 alias s='st .'
 
+connectToHeroku() {
+    #do things with parameters like $1 such as
+    heroku run script/rails console --app $1
+}
+alias prod=connectToHeroku
+
+alias tc='cd ~/Dropbox/tc'
+
+touchRtfDoc() {
+    # touch doesn't traditionally work with rtf docs
+    # so use this alias to mimic the functionality
+    echo '{\rtf1}' > $1.rtf 
+}
+alias rtf=touchRtfDoc
