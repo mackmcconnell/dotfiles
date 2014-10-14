@@ -37,3 +37,7 @@ alias zinc='cd ~/code/rails_projects/zinc'
 alias dots='cd ~/code/dotfiles/'
 alias tv='cd ~/Dropbox/media/shows/'
 alias books='cd ~/Dropbox/media/books/'
+
+# git shortcuts
+alias gp='git push'
+alias gph='git push heroku master'
