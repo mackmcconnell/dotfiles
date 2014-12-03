@@ -55,3 +55,8 @@ bindkey '^[[B' history-substring-search-down
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 export PATH="/usr/local/opt/rbenv/shims:/usr/local/opt/rbenv/bin:$PATH"
+
+# HISTORY
+HISTSIZE=10000
+SAVEHIST=9000
+HISTFILE=~/.zsh_history

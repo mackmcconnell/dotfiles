@@ -29,7 +29,7 @@ touchRtfDoc() {
 alias rtf=touchRtfDoc
 
 # shortcuts to rails projects
-alias order='cd ~/code/rails_projects/tcorder'
+alias order='cd ~/code/rails_projects/order_prime'
 alias tchome='cd ~/code/rails_projects/tchome'
 alias zinc='cd ~/code/rails_projects/zinc'
 
