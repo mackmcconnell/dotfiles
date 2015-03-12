@@ -19,7 +19,7 @@ connectToHeroku() {
 }
 alias prod=connectToHeroku
 
-alias tc='cd ~/Dropbox/tc'
+
 
 touchRtfDoc() {
     # touch doesn't traditionally work with rtf docs
@@ -32,11 +32,14 @@ alias rtf=touchRtfDoc
 alias order='cd ~/code/rails_projects/order_prime'
 alias tchome='cd ~/code/rails_projects/tchome'
 alias zinc='cd ~/code/rails_projects/zinc'
+alias bbhome='cd ~/code/rails_projects/bb'
 
 # shortcuts to other directories
 alias dots='cd ~/code/dotfiles/'
 alias tv='cd ~/Dropbox/media/shows/'
 alias books='cd ~/Dropbox/media/books/'
+alias tc='cd ~/Dropbox/tc'
+alias bb='cd ~/Dropbox/bb'
 
 # git shortcuts
 alias gp='git push'
