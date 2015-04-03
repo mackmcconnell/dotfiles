@@ -60,3 +60,7 @@ export PATH="/usr/local/opt/rbenv/shims:/usr/local/opt/rbenv/bin:$PATH"
 HISTSIZE=10000
 SAVEHIST=9000
 HISTFILE=~/.zsh_history
+
+# make it so you pass arguments to rake tasks without escaping characters
+# https://robots.thoughtbot.com/how-to-use-arguments-in-a-rake-task
+unsetopt nomatch
