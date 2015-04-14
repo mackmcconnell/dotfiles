@@ -32,7 +32,8 @@ alias rtf=touchRtfDoc
 alias order='cd ~/code/rails_projects/order_prime'
 alias tchome='cd ~/code/rails_projects/tchome'
 alias zinc='cd ~/code/rails_projects/zinc'
-alias bbhome='cd ~/code/rails_projects/bb'
+alias bbhome='cd ~/code/rails_projects/bbhome'
+alias bborder='cd ~/code/rails_projects/bb_prime'
 
 # shortcuts to other directories
 alias dots='cd ~/code/dotfiles/'
