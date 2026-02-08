@@ -1,43 +1,51 @@
-Install
--------
+# Dotfiles
 
-Your dotfiles are personal. [Fork this repo](https://github.com/lewagon/dotfiles/fork) on Github,
-and then clone it on your computer.
+Personal shell and editor config for macOS.
+
+## What's included
+
+| File | What it configures |
+|---|---|
+| `zshrc` | Zsh shell — Oh My Zsh, PATH, history, keybindings, version managers (rbenv, nvm, conda), Postgres, aliases |
+| `aliases` | Custom shell shortcuts |
+| `gitconfig` | Git settings (user, editor, aliases) |
+| `gemrc` | Ruby Gems config |
+| `vimrc` | Vim editor config |
+| `tm_properties` | TextMate editor config |
+| `libre_office_shortcuts.cfg` | LibreOffice keyboard shortcuts |
+
+## Prerequisites
+
+- [Oh My Zsh](https://ohmyz.sh/) installed
+
+## Install
+
+Clone the repo and run the install script:
 
 ```bash
-$ GITHUB_USERNAME=<put_your_github_username_here>
-# Then execute the following without changing anything
-$ mkdir -p ~/code/${GITHUB_USERNAME} && cd $_
-$ git clone git@github.com:${GITHUB_USERNAME}/dotfiles.git
-$ cd dotfiles
+git clone https://github.com/mackmcconnell/dotfiles.git ~/code/dotfiles
+cd ~/code/dotfiles
+./install.sh
 ```
 
-Open and edit the ```gitconfig``` and other files with your own preferences. When you're done, save these config (that's why you forked the repo).
+The install script will:
+1. Symlink each config file into your home directory (e.g. `~/code/dotfiles/zshrc` → `~/.zshrc`)
+2. Back up any existing config files to `<file>.backup` before replacing them
+3. Install the `zsh-syntax-highlighting` and `zsh-history-substring-search` Oh My Zsh plugins
+
+Restart your terminal after running.
+
+## Customization
+
+- **Shell aliases** — edit `~/.aliases`
+- **Zsh config** — edit `~/.zshrc`
+- **Git settings** — edit `~/.gitconfig`
+
+Since these are all symlinks back to this repo, you can commit and push changes directly:
 
 ```bash
-$ git add gitconfig
-$ git commit --message "My identity in the gitconfig"
-$ git push origin master
-```
-
-Now you can run the install script. It will not override existing config files, just
-rename them as ```#{file}.backup```.
-Assumption: you have [`oh-my-zsh`](http://ohmyz.sh/) is already installed.
-
-```bash
-$ ./install.sh
-```
-
-Customization
--------------
-
-You can open `~/.aliases` and add your own shortcuts
-
-You will want to customize your environment, just open `~/.zshenv` and
-stick all the variables you need:
-
-```bash
-# Amazon credentials
-export AMAZON_ACCESS_KEY=________________________
-export AMAZON_SECRET_KEY=_______________________
+cd ~/code/dotfiles
+git add -A
+git commit -m "description of change"
+git push
 ```
