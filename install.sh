@@ -36,6 +36,19 @@ if [ ! -d "$ZSH_PLUGINS_DIR/zsh-history-substring-search" ]; then
 fi
 cd "$CURRENT_DIR"
 
+# Claude Code settings
+CLAUDE_DIR="$HOME/.claude"
+CLAUDE_SETTINGS="$CLAUDE_DIR/settings.json"
+mkdir -p "$CLAUDE_DIR"
+if [ -e "$CLAUDE_SETTINGS" ] && [ ! -L "$CLAUDE_SETTINGS" ]; then
+  mv "$CLAUDE_SETTINGS" "$CLAUDE_SETTINGS.backup"
+  echo "-----> Moved your old $CLAUDE_SETTINGS config file to $CLAUDE_SETTINGS.backup"
+fi
+if [ ! -e "$CLAUDE_SETTINGS" ]; then
+  echo "-----> Symlinking your new $CLAUDE_SETTINGS"
+  ln -s "$PWD/claude/settings.json" "$CLAUDE_SETTINGS"
+fi
+
 # zshenv
 if [ ! -e "$HOME/.zshenv" ]; then
   touch "$HOME/.zshenv"
