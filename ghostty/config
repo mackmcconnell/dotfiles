@@ -1,0 +1,29 @@
+font-family = “JetBrains Mono”
+font-size = 24
+font-thicken = true
+theme = Dracula
+# theme = Catppuccin Mocha
+# theme = Monokai Pro
+# theme = ayu
+# theme = GitHub Dark Default
+window-width = 160
+window-height = 48
+window-padding-x = 30
+window-padding-y = 10
+window-padding-balance = true
+scrollback-limit = 10000000
+background-opacity = 0.95
+background-blur = 20
+cursor-style = bar
+cursor-style-blink = false
+confirm-close-surface = false
+minimum-contrast = 1.5
+
+window-padding-color = extend
+quick-terminal-position = top
+quick-terminal-size = 40%
+quick-terminal-animation-duration = 0.15
+
+keybind = cmd+opt+left=previous_tab
+keybind = cmd+opt+right=next_tab
+keybind = global:cmd+grave_accent=toggle_quick_terminal
