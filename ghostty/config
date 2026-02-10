@@ -1,8 +1,9 @@
 font-family = “JetBrains Mono”
 font-size = 24
 font-thicken = true
-theme = Dracula
-# theme = Catppuccin Mocha
+# theme = Aardvark Blue
+# theme = Dracula
+theme = Catppuccin Mocha
 # theme = Monokai Pro
 # theme = ayu
 # theme = GitHub Dark Default
@@ -26,4 +27,6 @@ quick-terminal-animation-duration = 0.15
 
 keybind = cmd+opt+left=previous_tab
 keybind = cmd+opt+right=next_tab
+keybind = cmd+shift+h=next_tab
+keybind = cmd+shift+l=previous_tab
 keybind = global:cmd+grave_accent=toggle_quick_terminal
