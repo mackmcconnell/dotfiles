@@ -49,6 +49,17 @@ if [ ! -e "$CLAUDE_SETTINGS" ]; then
   ln -s "$PWD/claude/settings.json" "$CLAUDE_SETTINGS"
 fi
 
+# Claude Code custom commands
+CLAUDE_COMMANDS="$CLAUDE_DIR/commands"
+if [ -e "$CLAUDE_COMMANDS" ] && [ ! -L "$CLAUDE_COMMANDS" ]; then
+  mv "$CLAUDE_COMMANDS" "$CLAUDE_COMMANDS.backup"
+  echo "-----> Moved your old $CLAUDE_COMMANDS directory to $CLAUDE_COMMANDS.backup"
+fi
+if [ ! -e "$CLAUDE_COMMANDS" ]; then
+  echo "-----> Symlinking your new $CLAUDE_COMMANDS"
+  ln -s "$PWD/claude/commands" "$CLAUDE_COMMANDS"
+fi
+
 # zshenv
 if [ ! -e "$HOME/.zshenv" ]; then
   touch "$HOME/.zshenv"

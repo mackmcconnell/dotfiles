@@ -145,6 +145,9 @@ alias c="claude"
 # External Config Files
 # ==============================================================================
 
+# Load API keys and secrets (NOT tracked in dotfiles)
+[[ -f "$HOME/.env.local" ]] && source "$HOME/.env.local"
+
 # Load custom aliases from ~/.aliases (if the file exists)
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
 
