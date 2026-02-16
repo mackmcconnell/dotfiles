@@ -1,9 +1,9 @@
 font-family = “JetBrains Mono”
 font-size = 24
 font-thicken = true
+theme = Catppuccin Mocha
 # theme = Aardvark Blue
 # theme = Dracula
-theme = Catppuccin Mocha
 # theme = Monokai Pro
 # theme = ayu
 # theme = GitHub Dark Default
@@ -20,6 +20,8 @@ cursor-style-blink = false
 confirm-close-surface = false
 minimum-contrast = 1.5
 
+clipboard-trim-trailing-spaces = true
+
 window-padding-color = extend
 quick-terminal-position = top
 quick-terminal-size = 40%
@@ -27,6 +29,6 @@ quick-terminal-animation-duration = 0.15
 
 keybind = cmd+opt+left=previous_tab
 keybind = cmd+opt+right=next_tab
-keybind = cmd+shift+h=next_tab
-keybind = cmd+shift+l=previous_tab
-keybind = global:cmd+grave_accent=toggle_quick_terminal
+keybind = cmd+shift+h=previous_tab
+keybind = cmd+shift+l=next_tab
+# keybind = global:cmd+grave_accent=toggle_quick_terminal
