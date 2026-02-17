@@ -48,7 +48,7 @@ else
         exit 1
     fi
 
-    AUDIO=$(find "$VOICE_MEMOS_DIR" -name "*.m4a" -not -name "*(transcribed)*" -type f -print0 | xargs -0 ls -t 2>/dev/null | head -1)
+    AUDIO=$(find "$VOICE_MEMOS_DIR" \( -name "*.m4a" -o -name "*.qta" \) -not -name "*(transcribed)*" -type f | sort -r | head -1)
 
     if [ -z "${AUDIO:-}" ]; then
         echo "No untranscribed voice memos found."
