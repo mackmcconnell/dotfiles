@@ -1,0 +1,112 @@
+#!/bin/bash
+# transcribe - Voice memo to Apple Note pipeline
+#
+# What it does:
+#   Records a voice memo on iPhone, then this command transcribes it into text
+#   and creates a new Apple Note with the transcript. Useful for brain dumps,
+#   journaling, or capturing ideas while walking around.
+#
+# How it works:
+#   1. Finds the latest .m4a file in the Voice Memos iCloud sync directory
+#      (skips files already marked as transcribed)
+#   2. Runs OpenAI's Whisper model locally (nothing sent to the cloud) to
+#      convert speech to text
+#   3. Creates a new Apple Note titled "Brain Dump - <date>" with the transcript
+#   4. Renames the original audio file with "(transcribed)" appended so you
+#      know it's been processed and can delete it
+#
+# Usage:
+#   transcribe              Transcribe the latest Voice Memo
+#   transcribe <file>       Transcribe a specific audio file
+#
+# Environment:
+#   WHISPER_MODEL           Whisper model size (default: "small")
+#                           Options: tiny, base, small, medium, large
+#                           Larger = more accurate but slower
+#
+# Dependencies:
+#   - openai-whisper (pip install openai-whisper)
+#   - Voice Memos iCloud sync enabled on iPhone
+#
+# First run downloads the Whisper model (~500MB for "small"). Only happens once.
+
+set -euo pipefail
+
+MODEL="${WHISPER_MODEL:-small}"
+VOICE_MEMOS_DIR="$HOME/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
+
+# --- Find audio file ---
+if [ $# -gt 0 ] && [ -f "$1" ]; then
+    AUDIO="$1"
+else
+    if [ ! -d "$VOICE_MEMOS_DIR" ]; then
+        echo "Voice Memos not syncing to this Mac."
+        echo "Enable in: iPhone Settings > Apple ID > iCloud > Voice Memos"
+        echo ""
+        echo "Or pass a file directly:"
+        echo "  transcribe /path/to/audio.m4a"
+        exit 1
+    fi
+
+    AUDIO=$(find "$VOICE_MEMOS_DIR" -name "*.m4a" -not -name "*(transcribed)*" -type f -print0 | xargs -0 ls -t 2>/dev/null | head -1)
+
+    if [ -z "${AUDIO:-}" ]; then
+        echo "No untranscribed voice memos found."
+        exit 1
+    fi
+fi
+
+echo "Transcribing: $(basename "$AUDIO")"
+
+# --- Check for whisper ---
+if ! command -v whisper &>/dev/null; then
+    echo ""
+    echo "whisper not installed. Run:"
+    echo "  pip install openai-whisper"
+    exit 1
+fi
+
+# --- Transcribe locally with Whisper ---
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
+
+whisper "$AUDIO" --model "$MODEL" --language en --output_format txt --output_dir "$TMP" 2>/dev/null
+
+TRANSCRIPT_FILE="$TMP/$(basename "${AUDIO%.*}").txt"
+
+if [ ! -f "$TRANSCRIPT_FILE" ] || [ ! -s "$TRANSCRIPT_FILE" ]; then
+    echo "Transcription failed or came back empty."
+    exit 1
+fi
+
+TRANSCRIPT=$(cat "$TRANSCRIPT_FILE")
+
+# --- Create Apple Note ---
+NOTE_TITLE="Brain Dump - $(date '+%B %d, %Y %-I:%M %p')"
+BODY_FILE=$(mktemp)
+printf '%s' "$TRANSCRIPT" > "$BODY_FILE"
+
+osascript - "$NOTE_TITLE" "$BODY_FILE" <<'APPLESCRIPT'
+on run argv
+    set noteTitle to item 1 of argv
+    set bodyPath to item 2 of argv
+    set noteBody to do shell script "cat " & quoted form of bodyPath
+    tell application "Notes"
+        make new note at folder "Notes" with properties {name:noteTitle, body:noteBody}
+    end tell
+end run
+APPLESCRIPT
+
+rm -f "$BODY_FILE"
+
+# --- Mark audio as transcribed ---
+DIR=$(dirname "$AUDIO")
+EXT="${AUDIO##*.}"
+BASE=$(basename "$AUDIO" ".$EXT")
+mv "$AUDIO" "$DIR/${BASE} (transcribed).$EXT"
+
+echo ""
+echo "Created Apple Note: $NOTE_TITLE"
+echo "Renamed: $(basename "$AUDIO") -> ${BASE} (transcribed).$EXT"
+echo "---"
+echo "$TRANSCRIPT"

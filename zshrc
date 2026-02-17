@@ -71,8 +71,8 @@ export EDITOR='subl -w'
 # PATH
 # ==============================================================================
 
-# Base PATH: system dirs + Homebrew + npm + misc tools + personal ~/bin
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/npm/bin:/usr/X11/bin:/usr/texbin:~/bin:$PATH"
+# Base PATH: system dirs + Homebrew + npm + misc tools + personal ~/bin + dotfiles scripts
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/npm/bin:/usr/X11/bin:/usr/texbin:~/bin:$HOME/code/dotfiles/bin:$PATH"
 
 # Heroku CLI
 export PATH="/usr/local/heroku/bin:$PATH"
