@@ -35,6 +35,22 @@ The install script will:
 
 Restart your terminal after running.
 
+## Scripts
+
+### `bin/transcribe`
+
+Transcribes iPhone Voice Memos into Apple Notes. Finds the latest untranscribed voice memo, runs it through Whisper, creates a new "Brain Dump" note, and marks the memo as transcribed in the Voice Memos app.
+
+```bash
+transcribe              # Local Whisper (private, slower)
+transcribe --cloud      # OpenAI Whisper API (fast, requires OPENAI_API_KEY)
+transcribe <file>       # Transcribe a specific audio file
+```
+
+Run it multiple times to work through your backlog - it skips already-transcribed memos.
+
+**Dependencies:** `openai-whisper` (local mode), `ffmpeg` (cloud mode), Voice Memos iCloud sync enabled.
+
 ## Customization
 
 - **Shell aliases** — edit `~/.aliases`

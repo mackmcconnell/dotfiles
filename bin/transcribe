@@ -7,33 +7,44 @@
 #   journaling, or capturing ideas while walking around.
 #
 # How it works:
-#   1. Finds the latest .m4a file in the Voice Memos iCloud sync directory
+#   1. Finds the latest .m4a/.qta file in the Voice Memos iCloud sync directory
 #      (skips files already marked as transcribed)
-#   2. Runs OpenAI's Whisper model locally (nothing sent to the cloud) to
-#      convert speech to text
+#   2. Runs Whisper to convert speech to text (locally or via OpenAI API)
 #   3. Creates a new Apple Note titled "Brain Dump - <date>" with the transcript
 #   4. Renames the original audio file with "(transcribed)" appended so you
 #      know it's been processed and can delete it
 #
 # Usage:
-#   transcribe              Transcribe the latest Voice Memo
+#   transcribe              Transcribe locally (private, slower)
+#   transcribe --cloud      Transcribe via OpenAI API (fast, sends audio to OpenAI)
 #   transcribe <file>       Transcribe a specific audio file
 #
 # Environment:
-#   WHISPER_MODEL           Whisper model size (default: "small")
+#   WHISPER_MODEL           Whisper model size for local mode (default: "small")
 #                           Options: tiny, base, small, medium, large
-#                           Larger = more accurate but slower
+#   OPENAI_API_KEY          Required for --cloud mode
 #
 # Dependencies:
-#   - openai-whisper (pip install openai-whisper)
-#   - Voice Memos iCloud sync enabled on iPhone
-#
-# First run downloads the Whisper model (~500MB for "small"). Only happens once.
+#   Local mode: openai-whisper (pip install openai-whisper)
+#   Cloud mode: curl + OPENAI_API_KEY
+#   Both: Voice Memos iCloud sync enabled on iPhone
 
 set -euo pipefail
 
 MODEL="${WHISPER_MODEL:-small}"
 VOICE_MEMOS_DIR="$HOME/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
+USE_CLOUD=false
+
+# --- Parse flags ---
+ARGS=()
+for arg in "$@"; do
+    if [ "$arg" = "--cloud" ]; then
+        USE_CLOUD=true
+    else
+        ARGS+=("$arg")
+    fi
+done
+set -- "${ARGS[@]+"${ARGS[@]}"}"
 
 # --- Find audio file ---
 if [ $# -gt 0 ] && [ -f "$1" ]; then
@@ -58,28 +69,63 @@ fi
 
 echo "Transcribing: $(basename "$AUDIO")"
 
-# --- Check for whisper ---
-if ! command -v whisper &>/dev/null; then
-    echo ""
-    echo "whisper not installed. Run:"
-    echo "  pip install openai-whisper"
-    exit 1
-fi
-
-# --- Transcribe locally with Whisper ---
+# --- Transcribe ---
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
-whisper "$AUDIO" --model "$MODEL" --language en --output_format txt --output_dir "$TMP" 2>/dev/null
+if [ "$USE_CLOUD" = true ]; then
+    # --- Cloud: OpenAI Whisper API ---
+    if [ -z "${OPENAI_API_KEY:-}" ]; then
+        echo "OPENAI_API_KEY not set. Required for --cloud mode."
+        exit 1
+    fi
 
-TRANSCRIPT_FILE="$TMP/$(basename "${AUDIO%.*}").txt"
+    echo "Using OpenAI Whisper API..."
 
-if [ ! -f "$TRANSCRIPT_FILE" ] || [ ! -s "$TRANSCRIPT_FILE" ]; then
-    echo "Transcription failed or came back empty."
-    exit 1
+    # Convert .qta to .m4a if needed (API doesn't support .qta)
+    UPLOAD_FILE="$AUDIO"
+    if [[ "$AUDIO" == *.qta ]]; then
+        UPLOAD_FILE="$TMP/$(basename "${AUDIO%.*}").m4a"
+        ffmpeg -i "$AUDIO" -codec copy "$UPLOAD_FILE" -y -loglevel error
+    fi
+
+    RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/audio/transcriptions" \
+        -H "Authorization: Bearer $OPENAI_API_KEY" \
+        -F "file=@$UPLOAD_FILE" \
+        -F "model=whisper-1" \
+        -F "language=en" \
+        -F "response_format=text" \
+        -F "prompt=Hello, welcome. This is a recording with proper punctuation, including commas, periods, and question marks.")
+
+    if [ -z "$RESPONSE" ] || echo "$RESPONSE" | grep -q '"error"'; then
+        echo "Transcription failed: $RESPONSE"
+        exit 1
+    fi
+
+    TRANSCRIPT="$RESPONSE"
+else
+    # --- Local: openai-whisper ---
+    if ! command -v whisper &>/dev/null; then
+        echo ""
+        echo "whisper not installed. Run:"
+        echo "  pip install openai-whisper"
+        echo ""
+        echo "Or use --cloud for the OpenAI API instead."
+        exit 1
+    fi
+
+    echo "Using local Whisper ($MODEL model)..."
+    whisper "$AUDIO" --model "$MODEL" --language en --output_format txt --output_dir "$TMP" 2>/dev/null
+
+    TRANSCRIPT_FILE="$TMP/$(basename "${AUDIO%.*}").txt"
+
+    if [ ! -f "$TRANSCRIPT_FILE" ] || [ ! -s "$TRANSCRIPT_FILE" ]; then
+        echo "Transcription failed or came back empty."
+        exit 1
+    fi
+
+    TRANSCRIPT=$(cat "$TRANSCRIPT_FILE")
 fi
-
-TRANSCRIPT=$(cat "$TRANSCRIPT_FILE")
 
 # --- Create Apple Note ---
 NOTE_TITLE="Brain Dump - $(date '+%B %d, %Y %-I:%M %p')"
@@ -104,6 +150,18 @@ DIR=$(dirname "$AUDIO")
 EXT="${AUDIO##*.}"
 BASE=$(basename "$AUDIO" ".$EXT")
 mv "$AUDIO" "$DIR/${BASE} (transcribed).$EXT"
+
+# Update title in Voice Memos app database
+DB="$VOICE_MEMOS_DIR/CloudRecordings.db"
+FILENAME=$(basename "$AUDIO")
+if [ -f "$DB" ]; then
+    CURRENT_TITLE=$(sqlite3 "$DB" "SELECT ZENCRYPTEDTITLE FROM ZCLOUDRECORDING WHERE ZPATH = '$FILENAME';")
+    if [ -n "$CURRENT_TITLE" ]; then
+        sqlite3 "$DB" "UPDATE ZCLOUDRECORDING SET ZENCRYPTEDTITLE = '${CURRENT_TITLE} (transcribed)' WHERE ZPATH = '$FILENAME';"
+    else
+        sqlite3 "$DB" "UPDATE ZCLOUDRECORDING SET ZENCRYPTEDTITLE = '(transcribed)' WHERE ZPATH = '$FILENAME';"
+    fi
+fi
 
 echo ""
 echo "Created Apple Note: $NOTE_TITLE"
