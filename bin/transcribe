@@ -138,12 +138,15 @@ on run argv
     set bodyPath to item 2 of argv
     set noteBody to do shell script "cat " & quoted form of bodyPath
     tell application "Notes"
-        make new note at folder "Notes" with properties {name:noteTitle, body:noteBody}
+        make new note at folder "Transcriptions" with properties {name:noteTitle, body:noteBody}
     end tell
 end run
 APPLESCRIPT
 
 rm -f "$BODY_FILE"
+
+# --- Copy to clipboard ---
+printf '%s' "$TRANSCRIPT" | pbcopy
 
 # --- Mark audio as transcribed ---
 DIR=$(dirname "$AUDIO")
@@ -166,5 +169,6 @@ fi
 echo ""
 echo "Created Apple Note: $NOTE_TITLE"
 echo "Renamed: $(basename "$AUDIO") -> ${BASE} (transcribed).$EXT"
+echo "Transcript copied to clipboard."
 echo "---"
 echo "$TRANSCRIPT"
