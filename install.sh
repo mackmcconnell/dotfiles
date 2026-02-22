@@ -60,6 +60,19 @@ if [ ! -e "$CLAUDE_COMMANDS" ]; then
   ln -s "$PWD/claude/commands" "$CLAUDE_COMMANDS"
 fi
 
+# Ghostty config
+GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
+GHOSTTY_CONFIG="$GHOSTTY_DIR/config"
+mkdir -p "$GHOSTTY_DIR"
+if [ -e "$GHOSTTY_CONFIG" ] && [ ! -L "$GHOSTTY_CONFIG" ]; then
+  mv "$GHOSTTY_CONFIG" "$GHOSTTY_CONFIG.backup"
+  echo "-----> Moved your old $GHOSTTY_CONFIG config file to $GHOSTTY_CONFIG.backup"
+fi
+if [ ! -e "$GHOSTTY_CONFIG" ]; then
+  echo "-----> Symlinking your new $GHOSTTY_CONFIG"
+  ln -s "$PWD/ghostty/config" "$GHOSTTY_CONFIG"
+fi
+
 # zshenv
 if [ ! -e "$HOME/.zshenv" ]; then
   touch "$HOME/.zshenv"

@@ -20,6 +20,11 @@ cursor-style-blink = false
 confirm-close-surface = false
 minimum-contrast = 1.5
 
+copy-on-select = clipboard
+mouse-hide-while-typing = false
+
+unfocused-split-opacity = 0.35
+
 clipboard-trim-trailing-spaces = true
 
 window-padding-color = extend
