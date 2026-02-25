@@ -166,3 +166,4 @@ alias c="claude"
 
 # Load default profile settings from ~/.profile (if the file exists)
 [[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
