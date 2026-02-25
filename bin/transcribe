@@ -18,6 +18,7 @@
 #   transcribe              Transcribe locally (private, slower)
 #   transcribe --cloud      Transcribe via OpenAI API (fast, sends audio to OpenAI)
 #   transcribe <file>       Transcribe a specific audio file
+#   transcribe <name>       Transcribe by Voice Memos app name (e.g. "New Recording 50")
 #
 # Environment:
 #   WHISPER_MODEL           Whisper model size for local mode (default: "small")
@@ -49,6 +50,24 @@ set -- "${ARGS[@]+"${ARGS[@]}"}"
 # --- Find audio file ---
 if [ $# -gt 0 ] && [ -f "$1" ]; then
     AUDIO="$1"
+elif [ $# -gt 0 ]; then
+    # Look up by Voice Memos app name
+    NAME="$*"
+    DB="$VOICE_MEMOS_DIR/CloudRecordings.db"
+    if [ ! -f "$DB" ]; then
+        echo "Voice Memos database not found."
+        exit 1
+    fi
+    FILENAME=$(sqlite3 "$DB" "SELECT ZPATH FROM ZCLOUDRECORDING WHERE ZENCRYPTEDTITLE = '$(echo "$NAME" | sed "s/'/''/g")' AND ZPATH IS NOT NULL AND ZPATH != '' LIMIT 1;")
+    if [ -z "$FILENAME" ]; then
+        echo "No voice memo found with name: $NAME"
+        exit 1
+    fi
+    AUDIO="$VOICE_MEMOS_DIR/$FILENAME"
+    if [ ! -f "$AUDIO" ]; then
+        echo "File not synced yet: $FILENAME"
+        exit 1
+    fi
 else
     if [ ! -d "$VOICE_MEMOS_DIR" ]; then
         echo "Voice Memos not syncing to this Mac."
