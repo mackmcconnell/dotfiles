@@ -73,6 +73,58 @@ if [ ! -e "$GHOSTTY_CONFIG" ]; then
   ln -s "$PWD/ghostty/config" "$GHOSTTY_CONFIG"
 fi
 
+# Karabiner config
+KARABINER_DIR="$HOME/.config/karabiner"
+KARABINER_CONFIG="$KARABINER_DIR/karabiner.json"
+mkdir -p "$KARABINER_DIR"
+if [ -e "$KARABINER_CONFIG" ] && [ ! -L "$KARABINER_CONFIG" ]; then
+  mv "$KARABINER_CONFIG" "$KARABINER_CONFIG.backup"
+  echo "-----> Moved your old $KARABINER_CONFIG config file to $KARABINER_CONFIG.backup"
+fi
+if [ ! -e "$KARABINER_CONFIG" ]; then
+  echo "-----> Symlinking your new $KARABINER_CONFIG"
+  ln -s "$PWD/karabiner/karabiner.json" "$KARABINER_CONFIG"
+fi
+
+# Yazi config
+YAZI_DIR="$HOME/.config/yazi"
+YAZI_CONFIG="$YAZI_DIR/yazi.toml"
+mkdir -p "$YAZI_DIR"
+if [ -e "$YAZI_CONFIG" ] && [ ! -L "$YAZI_CONFIG" ]; then
+  mv "$YAZI_CONFIG" "$YAZI_CONFIG.backup"
+  echo "-----> Moved your old $YAZI_CONFIG config file to $YAZI_CONFIG.backup"
+fi
+if [ ! -e "$YAZI_CONFIG" ]; then
+  echo "-----> Symlinking your new $YAZI_CONFIG"
+  ln -s "$PWD/yazi/yazi.toml" "$YAZI_CONFIG"
+fi
+
+# AeroSpace config
+AEROSPACE_DIR="$HOME/.config/aerospace"
+AEROSPACE_CONFIG="$AEROSPACE_DIR/aerospace.toml"
+mkdir -p "$AEROSPACE_DIR"
+if [ -e "$AEROSPACE_CONFIG" ] && [ ! -L "$AEROSPACE_CONFIG" ]; then
+  mv "$AEROSPACE_CONFIG" "$AEROSPACE_CONFIG.backup"
+  echo "-----> Moved your old $AEROSPACE_CONFIG config file to $AEROSPACE_CONFIG.backup"
+fi
+if [ ! -e "$AEROSPACE_CONFIG" ]; then
+  echo "-----> Symlinking your new $AEROSPACE_CONFIG"
+  ln -s "$PWD/aerospace/aerospace.toml" "$AEROSPACE_CONFIG"
+fi
+
+# Glow config
+GLOW_DIR="$HOME/.config/glow"
+GLOW_CONFIG="$GLOW_DIR/glow.yml"
+mkdir -p "$GLOW_DIR"
+if [ -e "$GLOW_CONFIG" ] && [ ! -L "$GLOW_CONFIG" ]; then
+  mv "$GLOW_CONFIG" "$GLOW_CONFIG.backup"
+  echo "-----> Moved your old $GLOW_CONFIG config file to $GLOW_CONFIG.backup"
+fi
+if [ ! -e "$GLOW_CONFIG" ]; then
+  echo "-----> Symlinking your new $GLOW_CONFIG"
+  ln -s "$PWD/glow/glow.yml" "$GLOW_CONFIG"
+fi
+
 # zshenv
 if [ ! -e "$HOME/.zshenv" ]; then
   touch "$HOME/.zshenv"
