@@ -1,0 +1,20 @@
+[opener]
+edit = [
+  { run = '/Applications/Cursor.app/Contents/Resources/app/bin/cursor "$@"', desc = "Cursor", block = true },
+]
+markdown = [
+  { run = 'glow -p "$@"', desc = "Glow (view)", block = true },
+  { run = '/Applications/Cursor.app/Contents/Resources/app/bin/cursor "$@"', desc = "Cursor (edit)", block = true },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.md", use = "markdown" },
+  { url = "*.mdx", use = "markdown" },
+  { url = "*.markdown", use = "markdown" },
+]
+
+[plugin]
+prepend_previewers = [
+  { mime = "text/markdown", run = "glow" },
+]
