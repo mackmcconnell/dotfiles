@@ -3,8 +3,9 @@ edit = [
   { run = '/Applications/Cursor.app/Contents/Resources/app/bin/cursor "$@"', desc = "Cursor", block = true },
 ]
 markdown = [
-  { run = 'glow -p "$@"', desc = "Glow (view)", block = true },
+  { run = 'open -a "Mackdown" "$@"', desc = "Mackdown (view)", orphan = true },
   { run = '/Applications/Cursor.app/Contents/Resources/app/bin/cursor "$@"', desc = "Cursor (edit)", block = true },
+  { run = 'glow -p "$@"', desc = "Glow (terminal)", block = true },
 ]
 
 [open]

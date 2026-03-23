@@ -125,6 +125,24 @@ if [ ! -e "$GLOW_CONFIG" ]; then
   ln -s "$PWD/glow/glow.yml" "$GLOW_CONFIG"
 fi
 
+# Claude Code plugins and skills (see claude/extensions.md for details)
+if command -v claude &> /dev/null; then
+  echo "-----> Installing Claude Code plugins..."
+  claude plugins install rust-analyzer-lsp@claude-plugins-official 2>/dev/null
+  claude plugins install frontend-design@claude-plugins-official 2>/dev/null
+  claude plugins install claude-hud@claude-hud 2>/dev/null
+
+  echo "-----> Installing Claude Code skills..."
+  CLAUDE_SKILLS_DIR="$CLAUDE_DIR/skills"
+  mkdir -p "$CLAUDE_SKILLS_DIR"
+  if [ ! -d "$CLAUDE_SKILLS_DIR/last30days" ]; then
+    git clone https://github.com/mvanhorn/last30days-skill.git "$CLAUDE_SKILLS_DIR/last30days"
+  fi
+else
+  echo "-----> Claude Code not found on PATH, skipping plugin/skill install"
+  echo "       Install claude first, then re-run this script (see claude/extensions.md)"
+fi
+
 # zshenv
 if [ ! -e "$HOME/.zshenv" ]; then
   touch "$HOME/.zshenv"
