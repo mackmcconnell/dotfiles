@@ -1,9 +1,12 @@
-Pull latest changes from remote via rebase, then push local changes.
+Pull latest changes from remote via rebase, commit any local changes, then push.
 
-Run these two git commands in sequence:
+Run these steps in sequence:
 
-1. `git pull --rebase`
-2. If the pull succeeds, run `git push`
+1. If there are unstaged or staged changes, stash them first with `git stash`.
+2. `git pull --rebase`
+3. If changes were stashed in step 1, run `git stash pop`.
+4. If there are any uncommitted changes (modified, added, or untracked files), stage them all with `git add -A` and commit with a concise message describing the changes.
+5. `git push`
 
 ## Error Resolution
 

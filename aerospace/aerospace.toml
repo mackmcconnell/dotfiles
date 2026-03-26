@@ -36,7 +36,6 @@ outer.bottom = 8
     # Focus (ctrl + hjkl)
     ctrl-h = 'focus left'
     ctrl-j = 'focus down'
-    ctrl-k = 'focus up'
     ctrl-l = 'focus right'
 
     # Move windows (ctrl + shift + hjkl)
