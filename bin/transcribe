@@ -1,24 +1,29 @@
 #!/bin/bash
-# transcribe - Voice memo to Apple Note pipeline
+# transcribe - Voice memo transcription pipeline
 #
 # What it does:
 #   Records a voice memo on iPhone, then this command transcribes it into text
-#   and creates a new Apple Note with the transcript. Useful for brain dumps,
+#   and sends it to a destination of your choice. Useful for brain dumps,
 #   journaling, or capturing ideas while walking around.
 #
 # How it works:
 #   1. Finds the latest .m4a/.qta file in the Voice Memos iCloud sync directory
 #      (skips files already marked as transcribed)
 #   2. Runs Whisper to convert speech to text (locally or via OpenAI API)
-#   3. Creates a new Apple Note titled "Brain Dump - <date>" with the transcript
+#   3. Sends the transcript to the chosen destination
 #   4. Renames the original audio file with "(transcribed)" appended so you
 #      know it's been processed and can delete it
 #
 # Usage:
-#   transcribe              Transcribe locally (private, slower)
-#   transcribe --cloud      Transcribe via OpenAI API (fast, sends audio to OpenAI)
-#   transcribe <file>       Transcribe a specific audio file
-#   transcribe <name>       Transcribe by Voice Memos app name (e.g. "New Recording 50")
+#   transcribe <destination>              Transcribe locally (private, slower)
+#   transcribe <destination> --cloud      Transcribe via OpenAI API (fast, sends audio to OpenAI)
+#   transcribe <destination> <file>       Transcribe a specific audio file
+#   transcribe <destination> <name>       Transcribe by Voice Memos app name (e.g. "New Recording 50")
+#
+# Destinations:
+#   notes       Create a new Apple Note in the Transcriptions folder
+#   daily       Append to today's Obsidian daily note (yyyy-mm-dd.md)
+#   clipboard   Copy transcript to clipboard
 #
 # Environment:
 #   WHISPER_MODEL           Whisper model size for local mode (default: "small")
@@ -34,6 +39,7 @@ set -euo pipefail
 
 MODEL="${WHISPER_MODEL:-small}"
 VOICE_MEMOS_DIR="$HOME/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
+OBSIDIAN_DAILY_DIR="$HOME/My Drive/mack/daily"
 USE_CLOUD=false
 
 # --- Parse flags ---
@@ -46,6 +52,35 @@ for arg in "$@"; do
     fi
 done
 set -- "${ARGS[@]+"${ARGS[@]}"}"
+
+# --- Parse destination ---
+if [ $# -lt 1 ]; then
+    echo "Usage: transcribe <destination> [file|name] [--cloud]"
+    echo ""
+    echo "Required:"
+    echo "  <destination>   Where to send the transcript"
+    echo "    notes         Create a new Apple Note"
+    echo "    daily         Save to today's Obsidian daily note"
+    echo "    clipboard     Copy to clipboard"
+    echo ""
+    echo "Optional:"
+    echo "  <file|name>     Specific audio file path or Voice Memos name"
+    echo "                  (default: latest untranscribed voice memo)"
+    echo "  --cloud         Use OpenAI Whisper API instead of local Whisper"
+    exit 1
+fi
+
+DESTINATION="$1"
+shift
+
+case "$DESTINATION" in
+    notes|daily|clipboard) ;;
+    *)
+        echo "Unknown destination: $DESTINATION"
+        echo "Valid destinations: notes, daily, clipboard"
+        exit 1
+        ;;
+esac
 
 # --- Find audio file ---
 if [ $# -gt 0 ] && [ -f "$1" ]; then
@@ -146,12 +181,14 @@ else
     TRANSCRIPT=$(cat "$TRANSCRIPT_FILE")
 fi
 
-# --- Create Apple Note ---
-NOTE_TITLE="Brain Dump - $(date '+%B %d, %Y %-I:%M %p')"
-BODY_FILE=$(mktemp)
-printf '%s' "$TRANSCRIPT" > "$BODY_FILE"
+# --- Send to destination ---
+case "$DESTINATION" in
+    notes)
+        NOTE_TITLE="Brain Dump - $(date '+%B %d, %Y %-I:%M %p')"
+        BODY_FILE=$(mktemp)
+        printf '%s' "$TRANSCRIPT" > "$BODY_FILE"
 
-osascript - "$NOTE_TITLE" "$BODY_FILE" <<'APPLESCRIPT'
+        osascript - "$NOTE_TITLE" "$BODY_FILE" <<'APPLESCRIPT'
 on run argv
     set noteTitle to item 1 of argv
     set bodyPath to item 2 of argv
@@ -162,10 +199,28 @@ on run argv
 end run
 APPLESCRIPT
 
-rm -f "$BODY_FILE"
+        rm -f "$BODY_FILE"
+        echo "Created Apple Note: $NOTE_TITLE"
+        ;;
 
-# --- Copy to clipboard ---
-printf '%s' "$TRANSCRIPT" | pbcopy
+    daily)
+        TODAY=$(date '+%Y-%m-%d')
+        DAILY_FILE="$OBSIDIAN_DAILY_DIR/$TODAY.md"
+
+        if [ -f "$DAILY_FILE" ]; then
+            printf '\n\n---\n\n%s' "$TRANSCRIPT" >> "$DAILY_FILE"
+        else
+            printf '%s' "$TRANSCRIPT" > "$DAILY_FILE"
+        fi
+
+        echo "Saved to daily note: $DAILY_FILE"
+        ;;
+
+    clipboard)
+        printf '%s' "$TRANSCRIPT" | pbcopy
+        echo "Transcript copied to clipboard."
+        ;;
+esac
 
 # --- Mark audio as transcribed ---
 DIR=$(dirname "$AUDIO")
@@ -185,9 +240,6 @@ if [ -f "$DB" ]; then
     fi
 fi
 
-echo ""
-echo "Created Apple Note: $NOTE_TITLE"
 echo "Renamed: $(basename "$AUDIO") -> ${BASE} (transcribed).$EXT"
-echo "Transcript copied to clipboard."
 echo "---"
 echo "$TRANSCRIPT"
