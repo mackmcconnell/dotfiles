@@ -53,7 +53,7 @@ outer.bottom = 8
     ctrl-shift-cmd-u = 'workspace 6'
     ctrl-shift-cmd-i = 'workspace 7'
     ctrl-shift-cmd-o = 'workspace 8'
-    alt-9 = 'workspace 9'
+    ctrl-shift-cmd-p = 'workspace 9'
 
     # Move window to workspace (alt + shift + number)
     alt-shift-w = 'move-node-to-workspace 1'
@@ -79,11 +79,11 @@ outer.bottom = 8
 
     # Open new Chrome window in current workspace
     ctrl-shift-b = '''exec-and-forget osascript -e '
-tell application "Google Chrome"
-    make new window
-    activate
-end tell'
-'''
+    tell application "Google Chrome"
+        make new window
+        activate
+    end tell'
+    '''
 
     # Modes
     alt-shift-semicolon = 'mode service'
