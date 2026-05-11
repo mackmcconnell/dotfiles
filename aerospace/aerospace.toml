@@ -109,6 +109,12 @@ outer.bottom = 8
 
 # -- Window rules --
 
+# Float "Trust this computer" / iOS device prompts
+[[on-window-detected]]
+if.app-id = 'com.apple.Finder'
+if.window-title-regex-substring = '(?i)trust'
+run = 'layout floating'
+
 # Float system preferences
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'

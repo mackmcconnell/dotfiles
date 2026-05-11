@@ -39,15 +39,17 @@ The user provides interesting facts, statements, or knowledge they want to memor
 
 Keep questions natural and conversational. Keep answers short and direct - just the key fact, not the full sentence restated.
 
-## Step 2: Ask which deck
+## Step 2: Pick the deck
 
-Use the AnkiConnect API to fetch available decks:
+**Default deck: `1 Everything FRESH`**. Use this unless the user specifies otherwise or the context strongly suggests another deck (e.g., Italian vocab → "1 Italiano"). Don't ask - just add to the default and mention it in the report. The user will redirect if they want a different deck.
+
+If you do need to fetch the deck list:
 
 ```bash
-curl -s http://localhost:8765 -X POST -d '{"action": "deckNames", "version": 6}'
+curl -s -4 http://127.0.0.1:8765 -d '{"action": "deckNames", "version": 6}'
 ```
 
-Then ask the user which deck to add the cards to. Show them the list. If the context makes it obvious (e.g., Italian vocab probably goes in "Italiano"), suggest the deck but still confirm.
+Note: use `-4` and `127.0.0.1` to force IPv4 - another service may be listening on IPv6 port 8765.
 
 ## Step 3: Add cards via AnkiConnect
 

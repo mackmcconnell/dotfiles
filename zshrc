@@ -152,7 +152,8 @@ function y() {
 # ==============================================================================
 
 # Launch Claude Code
-alias c="claude"
+alias c="claude --dangerously-skip-permissions"
+alias c4.6="claude --dangerously-skip-permissions --model claude-opus-4-6"
 
 # ==============================================================================
 # External Config Files

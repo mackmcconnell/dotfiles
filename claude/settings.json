@@ -3,7 +3,7 @@
     "allow": [
       "Bash(ssh:*)"
     ],
-    "defaultMode": "bypassPermissions"
+    "defaultMode": "auto"
   },
   "statusLine": {
     "type": "command",
@@ -16,7 +16,9 @@
     "frontend-design@claude-plugins-official": true,
     "figma@claude-plugins-official": true
   },
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
-  "voiceEnabled": true,
-  "theme": "light"
+  "theme": "light",
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }
