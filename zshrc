@@ -169,3 +169,10 @@ alias c4.6="claude --dangerously-skip-permissions --model claude-opus-4-6"
 [[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 export PATH="$HOME/.local:$PATH"
+
+# bun completions
+[ -s "/Users/davidmcconnell/.bun/_bun" ] && source "/Users/davidmcconnell/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

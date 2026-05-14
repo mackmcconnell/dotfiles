@@ -1,0 +1,1 @@
+/Users/davidmcconnell/code/dotfiles/claude/skills/gstack/document-release/SKILL.md

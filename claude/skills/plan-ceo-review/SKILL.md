@@ -1,0 +1,1 @@
+/Users/davidmcconnell/code/dotfiles/claude/skills/gstack/plan-ceo-review/SKILL.md

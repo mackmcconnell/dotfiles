@@ -1,0 +1,1 @@
+/Users/davidmcconnell/code/dotfiles/claude/skills/gstack/office-hours/SKILL.md

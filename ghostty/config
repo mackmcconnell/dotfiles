@@ -1,9 +1,9 @@
 font-family = “JetBrains Mono”
 font-size = 24
 font-thicken = true
-theme = Catppuccin Mocha
+# theme = Catppuccin Mocha
 # theme = Aardvark Blue
-# theme = Dracula
+theme = Dracula
 # theme = Monokai Pro
 # theme = ayu
 # theme = GitHub Dark Default
