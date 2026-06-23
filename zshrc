@@ -176,3 +176,15 @@ export PATH="$HOME/.local:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Skills Map — refresh + open the skills dashboard
+alias skills='node ~/code/skilly/scan.js --open'
+
+# Created by `pipx` on 2026-06-01 14:00:29
+export PATH="$PATH:/Users/davidmcconnell/.local/bin"
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<

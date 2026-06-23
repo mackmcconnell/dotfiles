@@ -39,12 +39,14 @@ Restart your terminal after running.
 
 ### `bin/transcribe`
 
-Transcribes iPhone Voice Memos into Apple Notes. Finds the latest untranscribed voice memo, runs it through Whisper, creates a new "Brain Dump" note, and marks the memo as transcribed in the Voice Memos app.
+Transcribes iPhone Voice Memos into Apple Notes, today's Obsidian daily note, or the clipboard. Finds the latest untranscribed voice memo by default, runs it through Whisper, sends it to the chosen destination, and marks the memo as transcribed in the Voice Memos app.
 
 ```bash
-transcribe              # Local Whisper (private, slower)
-transcribe --cloud      # OpenAI Whisper API (fast, requires OPENAI_API_KEY)
-transcribe <file>       # Transcribe a specific audio file
+transcribe                                  # Latest memo to daily note, local Whisper
+transcribe --cloud                         # Latest memo to daily note, OpenAI Whisper API
+transcribe --cloud "New Recording 80"      # Named memo to daily note
+transcribe "New Recording 80" --cloud daily # Same thing, any argument order works
+transcribe notes /path/to/audio.m4a        # Specific file to Apple Notes
 ```
 
 Run it multiple times to work through your backlog - it skips already-transcribed memos.

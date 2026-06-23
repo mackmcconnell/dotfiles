@@ -39,4 +39,4 @@ The tail of `install.sh` also `claude plugins install`s a few plugins and `git c
 
 ## bin/transcribe
 
-Transcribes the latest untranscribed iPhone Voice Memo into an Apple Note. Two backends: local `openai-whisper` (default) or OpenAI Whisper API (`--cloud`, needs `OPENAI_API_KEY` from `.env`). Marks memos as transcribed in the Voice Memos app so re-runs skip them.
+Transcribes Voice Memos to `daily` (default), `notes`, or `clipboard`. Two backends: local `openai-whisper` (default) or OpenAI Whisper API (`--cloud`, needs `OPENAI_API_KEY` from `.env`). Argument order is forgiving: `--cloud`, destination, and file/name can appear in any order, e.g. `transcribe --cloud "New Recording 80" daily`.

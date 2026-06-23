@@ -15,10 +15,9 @@
 #      know it's been processed and can delete it
 #
 # Usage:
-#   transcribe <destination>              Transcribe locally (private, slower)
-#   transcribe <destination> --cloud      Transcribe via OpenAI API (fast, sends audio to OpenAI)
-#   transcribe <destination> <file>       Transcribe a specific audio file
-#   transcribe <destination> <name>       Transcribe by Voice Memos app name (e.g. "New Recording 50")
+#   transcribe [destination] [file|name] [--cloud]
+#   transcribe --cloud "New Recording 80" daily
+#   transcribe daily --cloud "New Recording 80"
 #
 # Destinations:
 #   notes       Create a new Apple Note in the Transcriptions folder
@@ -41,46 +40,46 @@ MODEL="${WHISPER_MODEL:-small}"
 VOICE_MEMOS_DIR="$HOME/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
 OBSIDIAN_DAILY_DIR="$HOME/My Drive/mack/daily"
 USE_CLOUD=false
+DESTINATION=""
+DEFAULT_DESTINATION="daily"
 
-# --- Parse flags ---
-ARGS=()
+# --- Parse arguments ---
+AUDIO_ARGS=()
 for arg in "$@"; do
-    if [ "$arg" = "--cloud" ]; then
-        USE_CLOUD=true
-    else
-        ARGS+=("$arg")
-    fi
+    case "$arg" in
+        --cloud)
+            USE_CLOUD=true
+            ;;
+        -h|--help)
+            echo "Usage: transcribe [destination] [file|name] [--cloud]"
+            echo ""
+            echo "Destinations:"
+            echo "  daily       Save to today's Obsidian daily note (default)"
+            echo "  notes       Create a new Apple Note"
+            echo "  clipboard   Copy to clipboard"
+            echo ""
+            echo "Examples:"
+            echo "  transcribe --cloud \"New Recording 80\""
+            echo "  transcribe --cloud \"New Recording 80\" daily"
+            echo "  transcribe daily --cloud \"New Recording 80\""
+            echo "  transcribe notes /path/to/audio.m4a"
+            exit 0
+            ;;
+        notes|daily|clipboard)
+            if [ -n "$DESTINATION" ]; then
+                echo "Multiple destinations given: $DESTINATION and $arg"
+                echo "Valid destinations: notes, daily, clipboard"
+                exit 1
+            fi
+            DESTINATION="$arg"
+            ;;
+        *)
+            AUDIO_ARGS+=("$arg")
+            ;;
+    esac
 done
-set -- "${ARGS[@]+"${ARGS[@]}"}"
-
-# --- Parse destination ---
-if [ $# -lt 1 ]; then
-    echo "Usage: transcribe <destination> [file|name] [--cloud]"
-    echo ""
-    echo "Required:"
-    echo "  <destination>   Where to send the transcript"
-    echo "    notes         Create a new Apple Note"
-    echo "    daily         Save to today's Obsidian daily note"
-    echo "    clipboard     Copy to clipboard"
-    echo ""
-    echo "Optional:"
-    echo "  <file|name>     Specific audio file path or Voice Memos name"
-    echo "                  (default: latest untranscribed voice memo)"
-    echo "  --cloud         Use OpenAI Whisper API instead of local Whisper"
-    exit 1
-fi
-
-DESTINATION="$1"
-shift
-
-case "$DESTINATION" in
-    notes|daily|clipboard) ;;
-    *)
-        echo "Unknown destination: $DESTINATION"
-        echo "Valid destinations: notes, daily, clipboard"
-        exit 1
-        ;;
-esac
+DESTINATION="${DESTINATION:-$DEFAULT_DESTINATION}"
+set -- "${AUDIO_ARGS[@]+"${AUDIO_ARGS[@]}"}"
 
 # --- Find audio file ---
 if [ $# -gt 0 ] && [ -f "$1" ]; then
