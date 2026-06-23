@@ -15,9 +15,10 @@
 #      know it's been processed and can delete it
 #
 # Usage:
-#   transcribe [destination] [file|name] [--cloud]
+#   transcribe [file|name|menu] [destination] [cloud]
 #   transcribe --cloud "New Recording 80" daily
 #   transcribe daily --cloud "New Recording 80"
+#   transcribe --menu --cloud daily
 #
 # Destinations:
 #   notes       Create a new Apple Note in the Transcriptions folder
@@ -40,18 +41,29 @@ MODEL="${WHISPER_MODEL:-small}"
 VOICE_MEMOS_DIR="$HOME/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
 OBSIDIAN_DAILY_DIR="$HOME/My Drive/mack/daily"
 USE_CLOUD=false
+SHOW_MENU=false
 DESTINATION=""
 DEFAULT_DESTINATION="daily"
+
+format_duration() {
+    local total="${1:-0}"
+    local minutes=$((total / 60))
+    local seconds=$((total % 60))
+    printf "%d:%02d" "$minutes" "$seconds"
+}
 
 # --- Parse arguments ---
 AUDIO_ARGS=()
 for arg in "$@"; do
     case "$arg" in
-        --cloud)
+        --cloud|cloud)
             USE_CLOUD=true
             ;;
-        -h|--help)
-            echo "Usage: transcribe [destination] [file|name] [--cloud]"
+        --menu|menu)
+            SHOW_MENU=true
+            ;;
+        -h|--help|help)
+            echo "Usage: transcribe [file|name|menu] [destination] [cloud]"
             echo ""
             echo "Destinations:"
             echo "  daily       Save to today's Obsidian daily note (default)"
@@ -60,8 +72,10 @@ for arg in "$@"; do
             echo ""
             echo "Examples:"
             echo "  transcribe --cloud \"New Recording 80\""
+            echo "  transcribe cloud \"New Recording 80\""
             echo "  transcribe --cloud \"New Recording 80\" daily"
-            echo "  transcribe daily --cloud \"New Recording 80\""
+            echo "  transcribe daily cloud \"New Recording 80\""
+            echo "  transcribe menu cloud daily"
             echo "  transcribe notes /path/to/audio.m4a"
             exit 0
             ;;
@@ -82,7 +96,51 @@ DESTINATION="${DESTINATION:-$DEFAULT_DESTINATION}"
 set -- "${AUDIO_ARGS[@]+"${AUDIO_ARGS[@]}"}"
 
 # --- Find audio file ---
-if [ $# -gt 0 ] && [ -f "$1" ]; then
+if [ "$SHOW_MENU" = true ] && [ $# -eq 0 ]; then
+    DB="$VOICE_MEMOS_DIR/CloudRecordings.db"
+    if [ ! -f "$DB" ]; then
+        echo "Voice Memos database not found."
+        exit 1
+    fi
+
+    MENU_PATHS=()
+    MENU_TITLES=()
+    MENU_CREATED=()
+    MENU_DURATIONS=()
+
+    while IFS=$'\t' read -r path title created duration; do
+        if [ -f "$VOICE_MEMOS_DIR/$path" ]; then
+            MENU_PATHS+=("$path")
+            MENU_TITLES+=("${title:-Untitled}")
+            MENU_CREATED+=("$created")
+            MENU_DURATIONS+=("$duration")
+        fi
+        if [ "${#MENU_PATHS[@]}" -ge 10 ]; then
+            break
+        fi
+    done < <(sqlite3 -separator "$(printf '\t')" "$DB" "SELECT ZPATH, COALESCE(ZENCRYPTEDTITLE, 'Untitled'), datetime(ZDATE + 978307200, 'unixepoch', 'localtime'), COALESCE(CAST(ROUND(ZDURATION) AS INTEGER), 0) FROM ZCLOUDRECORDING WHERE ZPATH IS NOT NULL AND ZPATH != '' AND ZPATH NOT LIKE '%(transcribed)%' AND COALESCE(ZENCRYPTEDTITLE, '') NOT LIKE '%(transcribed)%' AND ZEVICTIONDATE IS NULL ORDER BY ZDATE DESC LIMIT 40;")
+
+    if [ "${#MENU_PATHS[@]}" -eq 0 ]; then
+        echo "No recent untranscribed voice memos found."
+        exit 1
+    fi
+
+    echo "Recent Voice Memos:"
+    for i in "${!MENU_PATHS[@]}"; do
+        number=$((i + 1))
+        duration_label=$(format_duration "${MENU_DURATIONS[$i]}")
+        printf "  %2d) %s | %s | %s | %s\n" "$number" "${MENU_TITLES[$i]}" "${MENU_CREATED[$i]}" "$duration_label" "${MENU_PATHS[$i]}"
+    done
+    echo ""
+    read -r -p "Choose recording number: " CHOICE
+
+    if [[ ! "$CHOICE" =~ ^[0-9]+$ ]] || [ "$CHOICE" -lt 1 ] || [ "$CHOICE" -gt "${#MENU_PATHS[@]}" ]; then
+        echo "Invalid choice: $CHOICE"
+        exit 1
+    fi
+
+    AUDIO="$VOICE_MEMOS_DIR/${MENU_PATHS[$((CHOICE - 1))]}"
+elif [ $# -gt 0 ] && [ -f "$1" ]; then
     AUDIO="$1"
 elif [ $# -gt 0 ]; then
     # Look up by Voice Memos app name
@@ -92,7 +150,14 @@ elif [ $# -gt 0 ]; then
         echo "Voice Memos database not found."
         exit 1
     fi
-    FILENAME=$(sqlite3 "$DB" "SELECT ZPATH FROM ZCLOUDRECORDING WHERE ZENCRYPTEDTITLE = '$(echo "$NAME" | sed "s/'/''/g")' AND ZPATH IS NOT NULL AND ZPATH != '' LIMIT 1;")
+    ESCAPED_NAME=$(printf '%s' "$NAME" | sed "s/'/''/g")
+    FILENAME=""
+    while IFS= read -r candidate; do
+        if [ -f "$VOICE_MEMOS_DIR/$candidate" ]; then
+            FILENAME="$candidate"
+            break
+        fi
+    done < <(sqlite3 "$DB" "SELECT ZPATH FROM ZCLOUDRECORDING WHERE ZENCRYPTEDTITLE = '$ESCAPED_NAME' AND ZPATH IS NOT NULL AND ZPATH != '' AND ZPATH NOT LIKE '%(transcribed)%' AND ZEVICTIONDATE IS NULL ORDER BY ZDATE DESC LIMIT 40;")
     if [ -z "$FILENAME" ]; then
         echo "No voice memo found with name: $NAME"
         exit 1
@@ -112,7 +177,20 @@ else
         exit 1
     fi
 
-    AUDIO=$(find "$VOICE_MEMOS_DIR" \( -name "*.m4a" -o -name "*.qta" \) -not -name "*(transcribed)*" -type f | sort -r | head -1)
+    DB="$VOICE_MEMOS_DIR/CloudRecordings.db"
+    AUDIO=""
+    if [ -f "$DB" ]; then
+        while IFS= read -r candidate; do
+            if [ -f "$VOICE_MEMOS_DIR/$candidate" ]; then
+                AUDIO="$VOICE_MEMOS_DIR/$candidate"
+                break
+            fi
+        done < <(sqlite3 "$DB" "SELECT ZPATH FROM ZCLOUDRECORDING WHERE ZPATH IS NOT NULL AND ZPATH != '' AND ZPATH NOT LIKE '%(transcribed)%' AND COALESCE(ZENCRYPTEDTITLE, '') NOT LIKE '%(transcribed)%' AND ZEVICTIONDATE IS NULL ORDER BY ZDATE DESC LIMIT 40;")
+    fi
+
+    if [ -z "$AUDIO" ] && [ ! -f "$DB" ]; then
+        AUDIO=$(find "$VOICE_MEMOS_DIR" \( -name "*.m4a" -o -name "*.qta" \) -not -name "*(transcribed)*" -type f | sort -r | head -1)
+    fi
 
     if [ -z "${AUDIO:-}" ]; then
         echo "No untranscribed voice memos found."

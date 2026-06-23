@@ -43,9 +43,10 @@ Transcribes iPhone Voice Memos into Apple Notes, today's Obsidian daily note, or
 
 ```bash
 transcribe                                  # Latest memo to daily note, local Whisper
-transcribe --cloud                         # Latest memo to daily note, OpenAI Whisper API
-transcribe --cloud "New Recording 80"      # Named memo to daily note
-transcribe "New Recording 80" --cloud daily # Same thing, any argument order works
+transcribe cloud                           # Latest memo to daily note, OpenAI Whisper API
+transcribe cloud "New Recording 80"        # Named memo to daily note
+transcribe "New Recording 80" cloud daily  # Same thing, any argument order works
+transcribe menu cloud daily                # Pick from recent recordings
 transcribe notes /path/to/audio.m4a        # Specific file to Apple Notes
 ```
 
