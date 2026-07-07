@@ -80,6 +80,10 @@ export PATH="/usr/local/heroku/bin:$PATH"
 # pipx — installs Python CLI tools in isolated environments
 export PATH="$PATH:/Users/mackmcconnell1/.local/bin"
 
+# MANPATH — man pages for dotfiles scripts (e.g. `man transcribe`).
+# Leading colon keeps the system default man paths.
+export MANPATH=":$HOME/code/dotfiles/man"
+
 # ==============================================================================
 # Ruby — rbenv (manages Ruby versions)
 # ==============================================================================

@@ -1,0 +1,134 @@
+.\" Man page for the transcribe voice-memo pipeline.
+.\" View with: man transcribe
+.TH TRANSCRIBE 1 "2026-07-07" "dotfiles" "User Commands"
+.SH NAME
+transcribe \- transcribe an iPhone voice memo and file it somewhere
+.SH SYNOPSIS
+.B transcribe
+.RI [ file | name | menu ]
+.RI [ destination ]
+.RB [ cloud | \-\-cloud ]
+.SH DESCRIPTION
+.B transcribe
+turns a Voice Memos recording into text and sends it to a destination of your
+choosing. Handy for brain dumps, journaling, or capturing ideas on the go.
+.PP
+By default it grabs the most recent untranscribed recording from the Voice
+Memos iCloud sync directory, runs Whisper over it, and appends the result to
+today's Obsidian daily note. When it finishes it renames the original audio
+with
+.RB \(lq (transcribed) \(rq
+appended \(em both on disk and in the Voice Memos app \(em so it is skipped
+next time and you know it is safe to delete.
+.SH ARGUMENTS
+Arguments are position-independent; the command figures out which is which.
+.TP
+.I file
+A path to an audio file. If the first non-flag argument is an existing file,
+it is transcribed directly (bypasses Voice Memos lookup).
+.TP
+.I name
+The exact title of a recording as shown in the Voice Memos app, e.g.
+.RB \(lq "New Recording 80" \(rq .
+Looks it up in the Voice Memos database.
+.TP
+.B menu
+Print a numbered list of the 10 most recent untranscribed recordings and prompt
+you to pick one.
+.PP
+With no file or name given, the newest untranscribed recording is used.
+.SH DESTINATIONS
+.TP
+.B daily
+Append to today's Obsidian daily note
+.RI ( yyyy-mm-dd .md )
+under
+.IR "~/My Drive/mack/daily" .
+This is the default.
+.TP
+.B notes
+Create a new Apple Note titled
+.RB \(lq "Brain Dump \- <date>" \(rq
+in the
+.I Transcriptions
+folder.
+.TP
+.B clipboard
+Copy the transcript to the clipboard.
+.SH OPTIONS
+.TP
+.BR cloud ", " \-\-cloud
+Use the OpenAI Whisper API instead of local Whisper. Requires
+.BR OPENAI_API_KEY .
+Faster and higher quality; sends audio to OpenAI.
+.TP
+.BR menu ", " \-\-menu
+Show the interactive picker (see
+.B menu
+above).
+.TP
+.BR help ", " \-h ", " \-\-help
+Print a short usage summary and exit.
+.SH ENVIRONMENT
+.TP
+.B WHISPER_MODEL
+Whisper model size for local mode:
+.IR tiny ", " base ", " small ", " medium ", " large .
+Defaults to
+.IR small .
+.TP
+.B OPENAI_API_KEY
+Required for
+.B \-\-cloud
+mode.
+.SH DEPENDENCIES
+Local mode needs
+.B openai-whisper
+.RI ( "pip install openai-whisper" ).
+Cloud mode needs
+.B curl
+and
+.BR OPENAI_API_KEY .
+Both modes need Voice Memos iCloud sync enabled on your iPhone. Cloud mode also
+uses
+.B ffmpeg
+to convert
+.I .qta
+recordings to
+.IR .m4a .
+.SH EXAMPLES
+.TP
+Transcribe the latest memo to today's daily note (defaults):
+.B transcribe
+.TP
+Use the OpenAI API for a named recording:
+.B transcribe \-\-cloud "New Recording 80"
+.TP
+Pick from a menu and copy to the clipboard:
+.B transcribe menu clipboard
+.TP
+Send a named recording to Apple Notes:
+.B transcribe notes "New Recording 80"
+.TP
+Transcribe an arbitrary audio file:
+.B transcribe notes /path/to/audio.m4a
+.SH FILES
+.TP
+.I ~/Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings
+Voice Memos recordings and the
+.I CloudRecordings.db
+index.
+.TP
+.I ~/My Drive/mack/daily/
+Obsidian daily notes (the
+.B daily
+destination).
+.SH EXIT STATUS
+Returns 0 on success, non-zero if no recording is found, a dependency is
+missing, or transcription fails.
+.SH SEE ALSO
+.BR whisper (1),
+.BR ffmpeg (1)
+.SH AUTHOR
+Mack McConnell. Source:
+.I ~/code/dotfiles/bin/transcribe
