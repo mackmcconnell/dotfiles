@@ -10,8 +10,23 @@ alias serve='ruby -run -e httpd . -p 8000'  # Or python -m SimpleHTTPServer :)
 alias be='bundle exec'
 alias bi='bundle install'
 
-# Open Sublime Text with a very short command!
-alias s='st .'
+# Open the current directory in Cursor with a very short command
+# (was `st .` / Sublime Text, which is not installed on this machine)
+alias s='cursor .'
+
+# ==============================================================================
+# Path shortcuts (zsh global aliases)
+# ==============================================================================
+# `alias -g` expands ANYWHERE on the command line, not just in command position.
+# So all of these work: `cursor agents`, `vim agents`, `cat agents`,
+# `git diff agents`. Both spellings are defined so muscle memory doesn't matter.
+#
+# Points at the real file in the dotfiles repo, not the ~/.codex/AGENTS.md
+# symlink, so edits show up in `git status` here.
+#
+# Escape with a backslash if you ever need the literal word: `mkdir \agents`
+alias -g agents="$HOME/code/dotfiles/codex/AGENTS.md"
+alias -g agents.md="$HOME/code/dotfiles/codex/AGENTS.md"
 
 connectToHeroku() {
     #do things with parameters like $1 such as

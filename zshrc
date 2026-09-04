@@ -64,8 +64,17 @@ export LC_ALL=en_US.UTF-8
 # Editor
 # ==============================================================================
 
-# Use Sublime Text as the default terminal editor (for git commits, etc.)
-export EDITOR='subl -w'
+# Use Cursor as the default terminal editor (for git commits, etc.)
+# -w / --wait blocks the shell until the Cursor tab is closed, which is what
+# git, crontab, etc. require. Falls back to vim if Cursor isn't installed.
+# NB: test the app bundle, not `command -v cursor` -- this block runs before
+# ~/.local/bin (where the cursor CLI is symlinked) is added to PATH below.
+if [ -x "/Applications/Cursor.app/Contents/Resources/app/bin/cursor" ]; then
+  export EDITOR='cursor -w'
+else
+  export EDITOR='vim'
+fi
+export VISUAL="$EDITOR"
 
 # ==============================================================================
 # PATH
