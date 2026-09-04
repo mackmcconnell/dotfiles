@@ -2,3 +2,6 @@
 .env
 *.env
 !.env.example
+
+# last30days runtime cache
+claude/config/last30days/

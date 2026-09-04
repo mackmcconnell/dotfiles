@@ -1,1 +1,0 @@
-/Users/davidmcconnell/code/dotfiles/claude/skills/gstack/canary/SKILL.md

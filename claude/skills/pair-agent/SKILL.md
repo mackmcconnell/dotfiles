@@ -1,1 +1,0 @@
-/Users/davidmcconnell/code/dotfiles/claude/skills/gstack/pair-agent/SKILL.md

@@ -60,6 +60,19 @@ if [ ! -e "$CLAUDE_COMMANDS" ]; then
   ln -s "$PWD/claude/commands" "$CLAUDE_COMMANDS"
 fi
 
+# Codex global instructions
+CODEX_DIR="$HOME/.codex"
+CODEX_AGENTS="$CODEX_DIR/AGENTS.md"
+mkdir -p "$CODEX_DIR"
+if [ -e "$CODEX_AGENTS" ] && [ ! -L "$CODEX_AGENTS" ]; then
+  mv "$CODEX_AGENTS" "$CODEX_AGENTS.backup"
+  echo "-----> Moved your old $CODEX_AGENTS config file to $CODEX_AGENTS.backup"
+fi
+if [ ! -e "$CODEX_AGENTS" ]; then
+  echo "-----> Symlinking your new $CODEX_AGENTS"
+  ln -s "$PWD/codex/AGENTS.md" "$CODEX_AGENTS"
+fi
+
 # Ghostty config
 GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
 GHOSTTY_CONFIG="$GHOSTTY_DIR/config"
