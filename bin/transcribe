@@ -220,16 +220,28 @@ if [ "$USE_CLOUD" = true ]; then
         ffmpeg -i "$AUDIO" -codec copy "$UPLOAD_FILE" -y -loglevel error
     fi
 
-    RESPONSE=$(curl -s -X POST "https://api.openai.com/v1/audio/transcriptions" \
+    # Capture body + HTTP status separately so curl/network errors are visible.
+    # Don't let `set -e` abort on a non-zero curl exit before we can report it.
+    CURL_RC=0
+    HTTP_CODE=$(curl -s -w '%{http_code}' -o "$TMP/response.txt" \
+        --max-time 600 --retry 2 --retry-connrefused \
+        -X POST "https://api.openai.com/v1/audio/transcriptions" \
         -H "Authorization: Bearer $OPENAI_API_KEY" \
         -F "file=@$UPLOAD_FILE" \
         -F "model=whisper-1" \
         -F "language=en" \
         -F "response_format=text" \
-        -F "prompt=Hello, welcome. This is a recording with proper punctuation, including commas, periods, and question marks.")
+        -F "prompt=Hello, welcome. This is a recording with proper punctuation, including commas, periods, and question marks.") || CURL_RC=$?
 
-    if [ -z "$RESPONSE" ] || echo "$RESPONSE" | grep -q '"error"'; then
-        echo "Transcription failed: $RESPONSE"
+    if [ "$CURL_RC" -ne 0 ]; then
+        echo "Could not reach OpenAI (curl exit $CURL_RC) — likely a network/upload timeout. Try again."
+        exit 1
+    fi
+
+    RESPONSE=$(cat "$TMP/response.txt" 2>/dev/null || true)
+
+    if [ "$HTTP_CODE" != "200" ] || [ -z "$RESPONSE" ] || echo "$RESPONSE" | grep -q '"error"'; then
+        echo "Transcription failed (HTTP $HTTP_CODE): $RESPONSE"
         exit 1
     fi
 

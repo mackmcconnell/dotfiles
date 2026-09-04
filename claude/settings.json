@@ -5,6 +5,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "claude-fable-5[1m]",
   "statusLine": {
     "type": "command",
     "command": "bash -c 'plugin_dir=$(ls -d \"$HOME/.claude/plugins/cache/claude-hud/claude-hud\"/*/ 2>/dev/null | sort -t/ -k9 -V | tail -1); exec \"/opt/homebrew/opt/node@22/bin/node\" \"${plugin_dir}dist/index.js\"'"
@@ -17,8 +18,11 @@
     "figma@claude-plugins-official": true
   },
   "effortLevel": "xhigh",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "light",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }

@@ -12,7 +12,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 
 # Defaults
 default-root-container-layout = 'tiles'
-default-root-container-orientation = 'auto'
+default-root-container-orientation = 'horizontal'
 
 # Accordion padding (visible portion of hidden windows)
 accordion-padding = 30
@@ -71,6 +71,7 @@ outer.bottom = 8
     alt-comma = 'layout accordion horizontal vertical'
     alt-f = ['flatten-workspace-tree', 'layout tiles accordion']
     alt-shift-space = 'layout floating tiling'
+    alt-shift-4 = 'exec-and-forget /Users/mackmcconnell1/code/dotfiles/aerospace/toggle-four-grid.sh'
 
     # Resize
     alt-minus = 'resize smart -50'
