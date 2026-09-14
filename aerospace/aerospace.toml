@@ -20,6 +20,9 @@ accordion-padding = 30
 # Mouse follows focus when switching monitors
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
+# Keep ChatGPT Mini on the active workspace, including after app restarts.
+exec-on-workspace-change = ['/bin/bash', '-c', 'exec /bin/bash "$HOME/code/dotfiles/aerospace/follow-chatgpt-mini.sh"']
+
 # Gaps
 [gaps]
 inner.horizontal = 8
