@@ -40,3 +40,7 @@ The tail of `install.sh` also `claude plugins install`s a few plugins and `git c
 ## bin/transcribe
 
 Transcribes Voice Memos to `daily` (default), `notes`, or `clipboard`. Two backends: local `openai-whisper` (default) or OpenAI Whisper API (`cloud`/`--cloud`, needs `OPENAI_API_KEY` from `.env`). Argument order is forgiving: `cloud`, destination, and file/name can appear in any order, e.g. `transcribe cloud "New Recording 80" daily`. Use `menu`/`--menu` with no file/name to choose from recent recordings.
+
+## Shared personal skills
+
+See [README.md, Shared user skills](README.md#shared-user-skills) for the current source and discovery paths, proposed migration, and repair commands. Keep that section accurate when changing `bin/install-agent-skills`; do not maintain a second copy of the architecture here.

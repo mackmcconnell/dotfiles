@@ -1,0 +1,29 @@
+#!/bin/bash
+# Install shared skills without running the unrelated dotfiles installers.
+set -euo pipefail
+dotfiles_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+agent_home="${1:-$HOME}"
+for agent in .codex .claude; do
+  skills_dir="$agent_home/$agent/skills"
+  mkdir -p "$skills_dir"
+  for source_dir in "$dotfiles_root"/codex/skills/*; do
+    [ -f "$source_dir/SKILL.md" ] || continue
+    skill_name="$(basename "$source_dir")"
+    target="$skills_dir/$skill_name"
+    # A relative repo link may already resolve to the canonical directory.
+    if [ -d "$target" ] && [ "$(cd "$target" && pwd -P)" = "$(cd "$source_dir" && pwd -P)" ]; then
+      continue
+    fi
+    if [ -L "$target" ]; then
+      rm "$target"
+    elif [ -e "$target" ]; then
+      backup_dir="$agent_home/$agent/skill-backups"
+      mkdir -p "$backup_dir"
+      backup_slot="$(mktemp -d "$backup_dir/$skill_name.XXXXXX")"
+      mv "$target" "$backup_slot/$skill_name"
+      echo "Preserved previous skill at $backup_slot/$skill_name"
+    fi
+    ln -s "$source_dir" "$target"
+    echo "Linked $target"
+  done
+done

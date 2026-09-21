@@ -35,6 +35,36 @@ The install script will:
 
 Restart your terminal after running.
 
+## Shared user skills
+
+Maintain one source per personal skill; app discovery folders contain links, not separate copies. Keep app settings and state in their respective `.codex` and `.claude` folders. Team-owned skills stay in their project repositories, and plugin-owned skills stay managed by their plugins.
+
+**Current implementation:** `codex/skills/<name>/SKILL.md` is the shared source. `bin/install-agent-skills` links each skill into `~/.codex/skills/<name>` and `~/.claude/skills/<name>`. `install.sh` also calls this helper. Only `sync` has been consolidated so far. The repo's `claude/skills/sync` is itself a relative link to the same source.
+
+**Proposed next step, not yet implemented:** consolidate the remaining personal skills under `skills/` and update the helper accordingly. Verify Codex discovery before switching its installation path to the currently documented `~/.agents/skills`; avoid installing the same skill in both Codex locations. Keep this section and the helper in agreement when migrating.
+
+### Install or repair
+
+After committing and pushing changes from the source machine, run on another machine:
+
+```bash
+cd ~/code/dotfiles
+git pull --rebase
+bash bin/install-agent-skills
+```
+
+To repair local links, run only the helper. It is safe to repeat: it repairs stale links for skills in the shared source and backs up replaced real directories under `~/.codex/skill-backups/` or `~/.claude/skill-backups/`. It does not remove links for deleted skills or repair unrelated skills.
+
+If a skill is missing, check that both app paths resolve to its canonical source:
+
+```bash
+ls -ld ~/.codex/skills/sync ~/.claude/skills/sync
+(cd ~/.codex/skills/sync && pwd -P)
+(cd ~/.claude/skills/sync && pwd -P)
+```
+
+Both resolved paths should end in `dotfiles/codex/skills/sync`. Confirm `SKILL.md` exists there, rerun the helper, then start a fresh app session and check its skill picker. If an old duplicate definition remains in a project's skills or Claude commands, compare it with the canonical source before removing it. Never delete unique content just to eliminate a duplicate name.
+
 ## Scripts
 
 ### `bin/transcribe`

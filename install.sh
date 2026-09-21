@@ -73,6 +73,9 @@ if [ ! -e "$CODEX_AGENTS" ]; then
   ln -s "$PWD/codex/AGENTS.md" "$CODEX_AGENTS"
 fi
 
+# Shared user-level skills for Codex and Claude
+bash "$PWD/bin/install-agent-skills" || exit 1
+
 # Ghostty config
 GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
 GHOSTTY_CONFIG="$GHOSTTY_DIR/config"
