@@ -5,3 +5,6 @@
 
 # last30days runtime cache
 claude/config/last30days/
+
+# Claude-managed synced skill bundles
+claude/skills/synced/
