@@ -1,0 +1,492 @@
+model = "gpt-6-sol"
+model_reasoning_effort = "low"
+
+notify = ["/Users/davidmcconnell/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
+approval_policy = "never"
+approvals_reviewer = "user"
+sandbox_mode = "danger-full-access"
+service_tier = "priority"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "/Users/davidmcconnell/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "/Users/davidmcconnell/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."google-calendar@openai-curated"]
+enabled = true
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."slack@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."notion@openai-curated"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."record-and-replay@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[projects."/Users/davidmcconnell/code/aigency"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/mae"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/geostar_landing"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/mack_os"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-05-13/computer-plugin-computer-use-openai-bundled"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-05-19/i-recently-found-this-really-realistic"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/geopetto"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/geo-jam"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/review-sites"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-07-13/agency-partnership-revshare-research"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-07-13/give"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/geostar_app"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-07-29/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-07-29/realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/geostar_launchpad"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/check"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-5"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-6"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-7"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-8"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-9"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-10"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-11"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-12"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-13"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-14"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-15"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-16"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-17"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-18"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-19"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-20"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-21"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-22"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-23"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-24"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-25"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-26"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-27"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-28"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-29"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-30"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-31"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-32"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-33"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-34"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-35"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-36"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-37"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-38"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-39"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-40"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-25/help-me-find-41"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/help-me-find"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/help-me-find-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/help-me-find-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/help-me-find-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/help-me-find-5"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/joshua-follow-ups"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-08-26/geostar-newsletter-audit"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-02/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-5"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/launchpad"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-6"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-7"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-8"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-03/new-realtime-voice-chat-9"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-04/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-04/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-09/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-09/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-09/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-09/new-realtime-voice-chat-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-09/new-realtime-voice-chat-5"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-12/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-17/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-17/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-17/daisuke-partnership-terms"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-17/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-18/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-18/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-18/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-19/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-19/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-19/new-realtime-voice-chat-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-21/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-21/spotify-podcast-cleanup"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/codex-full-access-defaults"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/meatpacking-workspace"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/event-rsvp-check"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/help-me-develop-one-section-of"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/help-me-develop-one-section-of-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/help-me-develop-one-section-of-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/new-realtime-voice-chat-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/new-realtime-voice-chat-5"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/new-realtime-voice-chat-7"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/handle-the-follow-up-tasks-from"]
+trust_level = "trusted"
+
+[desktop]
+ambient-suggestions-enabled = false
+appearanceLightCodeThemeId = "gruvbox"
+appearanceDarkCodeThemeId = "ayu"
+preventSleepWhileRunning = true
+keepRemoteControlAwakeWhilePluggedIn = true
+selected-avatar-id = "dewey"
+conversationDetailMode = "STEPS_COMMANDS"
+followUpQueueMode = "queue"
+dock-icon-preference = "codex-system"
+show-context-window-usage = true
+realtimeVoiceScreenContextEnabled = true
+avatar-overlay-mascot-width-px = 146
+
+[desktop.appearanceLightChromeTheme]
+accent = "#458588"
+contrast = 45
+ink = "#3c3836"
+opaqueWindows = false
+surface = "#fbf1c7"
+
+[desktop.appearanceLightChromeTheme.fonts]
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#3c3836"
+diffRemoved = "#cc241d"
+skill = "#b16286"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#e6b450"
+contrast = 60
+ink = "#bfbdb6"
+opaqueWindows = false
+surface = "#0b0e14"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+ui = "Satoshi"
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#7fd962"
+diffRemoved = "#ea6c73"
+skill = "#cda1fa"
+
+[desktop.open-in-target-preferences]
+global = "cursor"
+
+[features]
+js_repl = false
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/davidmcconnell/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+CODEX_HOME = "/Users/davidmcconnell/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.915.31945"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/davidmcconnell/.codex/plugins/cache/openai-bundled/browser/26.915.31945/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "/Users/davidmcconnell/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
+
+[shell_environment_policy.set]
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,e13fd947e846d3d306e9249dd3c73d14931b6494803dbafb16cef85e6add9506"
+
+[apps.connector_2128aebfecb84f64a069897515042a44.tools."gmail.update_draft"]
+approval_mode = "approve"
+
+[apps.connector_2128aebfecb84f64a069897515042a44.tools."gmail.send_email"]
+approval_mode = "approve"
+
+[apps.connector_5f3c8c41a1e54ad7a76272c89e2554fa.tools."google_drive.batch_update_document"]
+approval_mode = "approve"
+
+[apps.connector_947e0d954944416db111db556030eea6.tools."google_calendar.update_event"]
+approval_mode = "approve"
+
+[apps.connector_947e0d954944416db111db556030eea6.tools."google_calendar.create_event"]
+approval_mode = "approve"

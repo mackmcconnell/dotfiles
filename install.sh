@@ -73,8 +73,20 @@ if [ ! -e "$CODEX_AGENTS" ]; then
   ln -s "$PWD/codex/AGENTS.md" "$CODEX_AGENTS"
 fi
 
-# Codex permission defaults. Keep each machine's other config.toml settings intact.
-bash "$PWD/bin/apply-codex-defaults" || exit 1
+# Codex user configuration
+CODEX_CONFIG="$CODEX_DIR/config.toml"
+if [ -e "$CODEX_CONFIG" ] && [ ! -L "$CODEX_CONFIG" ]; then
+  CODEX_CONFIG_BACKUP="$CODEX_CONFIG.backup"
+  if [ -e "$CODEX_CONFIG_BACKUP" ]; then
+    CODEX_CONFIG_BACKUP="$CODEX_CONFIG.backup.$(date +%Y%m%d%H%M%S)"
+  fi
+  mv "$CODEX_CONFIG" "$CODEX_CONFIG_BACKUP"
+  echo "-----> Moved your old $CODEX_CONFIG config file to $CODEX_CONFIG_BACKUP"
+fi
+if [ ! -e "$CODEX_CONFIG" ]; then
+  echo "-----> Symlinking your new $CODEX_CONFIG"
+  ln -s "$PWD/codex/config.toml" "$CODEX_CONFIG"
+fi
 
 # Shared user-level skills for Codex and Claude
 bash "$PWD/bin/install-agent-skills" || exit 1

@@ -2,7 +2,7 @@
 name: sync
 category: "Dev Tools & Internal Systems"
 role: workflow
-description: Sync local work with remote using rebase and push. Use for /sync or requests to sync the repo. Auto-commits pending work and resolves evidence-backed conflicts; "sync without committing" (formerly /ship) preserves uncommitted work.
+description: Sync local work with remote using rebase and push. Use for /sync to sync the current repo or /sync -global to sync a configured list of repos. Auto-commits pending work and resolves evidence-backed conflicts; "sync without committing" (formerly /ship) preserves uncommitted work.
 user-invocable: true
 disable-model-invocation: true
 ---
@@ -10,6 +10,18 @@ disable-model-invocation: true
 # Sync
 
 Complete routine conflict resolution autonomously under the decision policy below. Optimize for preserving intended work and behavior, then completing the sync. A clean Git status is not success if a resolution silently loses work. Investigate answerable concerns before involving the user; do not infer permission to discard work from a request to sync.
+
+## Scope
+
+- `/sync` runs the workflow below only for the Git repository containing the current working directory.
+- `/sync -global` runs the same workflow once for each repository in [assets/global-repos.txt](assets/global-repos.txt). It works from any current directory. Do not discover or add repositories automatically.
+- `/sync without committing` and `/sync -global without committing` use the corresponding scope with the **Sync without committing** procedure below.
+
+For global mode, read the list before any mutation. Ignore blank lines and comments, expand `~/` using the current user's home directory, and deduplicate canonical repository roots. Reject an entry if it is missing, is not a Git repository, or resolves to a different repository root. Never treat a parent directory as an instruction to sync every repository below it. If the list is missing or empty, ask the user which repositories to include instead of guessing.
+
+Preflight every listed repository: read its applicable repository instructions and release gates, then inspect its branch, upstream, worktree status, and any Git operation in progress. Tell the user which repositories are in scope and flag any that need attention. Run the normal single-repository workflow sequentially for each valid entry, including its recovery and verification steps. If any repository fails or needs a decision, credentials, or release approval, preserve its state, record the failure, and continue with the remaining independent repositories. Do not push a protected or production branch before its required approval. Do not change the global list as part of a sync run.
+
+If any repository failed or was skipped, lead the final response with **⚠️ SYNC GLOBAL INCOMPLETE**, the number of affected repositories, and their names. For each one, state plainly what failed, what was left unsynced, and the next action. In voice mode, say the failures aloud before summarizing successes. Do not bury failures in a success list or say the global sync succeeded. Then give one per-repository summary: synced and verified, already matched, or needs attention. Claim that all repositories are synced only when every listed repository's local and upstream refs match and no operation remains in progress.
 
 ## Decision policy
 

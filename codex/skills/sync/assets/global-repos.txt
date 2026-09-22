@@ -1,0 +1,8 @@
+# Repositories included by /sync -global. One repository root per line.
+~/code/aigency
+~/code/reader
+~/code/dotfiles
+~/code/mack_os
+~/code/launchpad
+~/code/geostar_landing
+~/code/geo-jam
