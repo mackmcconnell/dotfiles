@@ -1,0 +1,50 @@
+#!/bin/bash
+set -euo pipefail
+
+config_path="${1:-$HOME/.codex/config.toml}"
+config_dir="$(dirname "$config_path")"
+mkdir -p "$config_dir"
+
+if [ ! -e "$config_path" ]; then
+  touch "$config_path"
+  chmod 600 "$config_path"
+fi
+
+set_config_value() {
+  local key="$1"
+  local value="$2"
+  local temp_file
+  temp_file="$(mktemp "${TMPDIR:-/tmp}/codex-config.XXXXXX")"
+
+  awk -v key="$key" -v value="$value" '
+    BEGIN { in_top_level = 1 }
+    in_top_level && /^\[/ {
+      if (!updated) {
+        print key " = \"" value "\""
+        updated = 1
+      }
+      in_top_level = 0
+    }
+    in_top_level && $0 ~ ("^" key "[[:space:]]*=") {
+      if (!updated) {
+        print key " = \"" value "\""
+        updated = 1
+      }
+      next
+    }
+    { print }
+    END {
+      if (!updated) {
+        print key " = \"" value "\""
+      }
+    }
+  ' "$config_path" > "$temp_file"
+
+  cat "$temp_file" > "$config_path"
+  rm "$temp_file"
+}
+
+set_config_value "approval_policy" "never"
+set_config_value "sandbox_mode" "danger-full-access"
+
+echo "-----> Set Codex defaults to full access with no approval prompts"

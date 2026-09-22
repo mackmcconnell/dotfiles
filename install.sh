@@ -73,6 +73,9 @@ if [ ! -e "$CODEX_AGENTS" ]; then
   ln -s "$PWD/codex/AGENTS.md" "$CODEX_AGENTS"
 fi
 
+# Codex permission defaults. Keep each machine's other config.toml settings intact.
+bash "$PWD/bin/apply-codex-defaults" || exit 1
+
 # Shared user-level skills for Codex and Claude
 bash "$PWD/bin/install-agent-skills" || exit 1
 

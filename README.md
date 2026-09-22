@@ -31,9 +31,21 @@ cd ~/code/dotfiles
 The install script will:
 1. Symlink each config file into your home directory (e.g. `~/code/dotfiles/zshrc` → `~/.zshrc`)
 2. Back up any existing config files to `<file>.backup` before replacing them
-3. Install the `zsh-syntax-highlighting` and `zsh-history-substring-search` Oh My Zsh plugins
+3. Set Codex's user-level defaults to full access without changing its other settings
+4. Install the `zsh-syntax-highlighting` and `zsh-history-substring-search` Oh My Zsh plugins
 
 Restart your terminal after running.
+
+### Codex permissions defaults
+
+`./install.sh` preserves the rest of `~/.codex/config.toml` while ensuring these top-level settings are present:
+
+```toml
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+```
+
+After syncing this repository to another machine, run `./install.sh` there to apply the same defaults without replacing that machine's other Codex configuration. To apply only the Codex defaults, run `bash bin/apply-codex-defaults`.
 
 ## Shared user skills
 
