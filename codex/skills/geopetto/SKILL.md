@@ -13,7 +13,7 @@ For project work, start with `projects get ID`: it returns the Markdown context 
 
 The script reads revisions before writes. On a `conflict`, read the latest task or project and reconcile before changing it again. It persists task and project creation idempotency keys under `~/.local/state/geopetto-agent/`; rerun the same create command after an uncertain response. For other uncertain writes, inspect the returned `readback` or fetch the resource before deciding whether to repeat the operation. Do not blindly retry a mutation. Never print credentials or bulk task exports into logs.
 
-The script defaults to the hosted Geopetto URL. Set `GEOPETTO_URL` only to use a different server. Hosted access uses `GEOPETTO_BASIC_AUTH_USER` and `GEOPETTO_BASIC_AUTH_PASSWORD` from the environment. Keep credentials outside this synced skill and dotfiles. If authentication is unavailable, report the missing configuration; do not embed credentials in commands or fall back to another task store.
+The script defaults to the hosted Geopetto URL. It reads `GEOPETTO_URL`, `GEOPETTO_BASIC_AUTH_USER`, and `GEOPETTO_BASIC_AUTH_PASSWORD` from the environment, falling back to those keys in the private `~/code/aigency/.env` file. `GEOPETTO_ENV_FILE` can select another local file. Keep credentials outside this synced skill and dotfiles. If authentication is unavailable, report the missing configuration; do not embed credentials in commands or fall back to another task store.
 
 Examples:
 

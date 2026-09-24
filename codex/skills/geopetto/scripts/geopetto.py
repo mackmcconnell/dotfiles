@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shlex
 import socket
 import sys
 from urllib.error import HTTPError, URLError
@@ -18,6 +19,33 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 import uuid
 
 DEFAULT_URL = 'https://geopetto.162.243.239.97.sslip.io'
+CONFIG_KEYS = {'GEOPETTO_URL', 'GEOPETTO_BASIC_AUTH_USER', 'GEOPETTO_BASIC_AUTH_PASSWORD'}
+
+
+def local_config() -> dict[str, str]:
+    """Read only Geopetto values from the existing private Aigency env file."""
+    file = Path(os.getenv('GEOPETTO_ENV_FILE', str(Path.home() / 'code/aigency/.env')))
+    if not file.is_file():
+        return {}
+    result: dict[str, str] = {}
+    for line in file.read_text().splitlines():
+        line = line.strip()
+        if line.startswith('export '):
+            line = line[7:].strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+        key, value = line.split('=', 1)
+        key = key.strip()
+        if key not in CONFIG_KEYS:
+            continue
+        try:
+            parsed = shlex.split(value, comments=True)
+        except ValueError as exc:
+            raise AgentError(f'Invalid {key} in local Geopetto configuration', 'auth_config') from exc
+        if len(parsed) != 1:
+            raise AgentError(f'Invalid {key} in local Geopetto configuration', 'auth_config')
+        result[key] = parsed[0]
+    return result
 
 
 class AgentError(Exception):
@@ -38,13 +66,14 @@ class NoRedirect(HTTPRedirectHandler):
 
 class Client:
     def __init__(self) -> None:
-        origin = os.getenv('GEOPETTO_URL', DEFAULT_URL).rstrip('/')
+        config = local_config()
+        origin = (os.getenv('GEOPETTO_URL') or config.get('GEOPETTO_URL') or DEFAULT_URL).rstrip('/')
         parts = urlsplit(origin)
         if parts.scheme not in ('http', 'https') or not parts.netloc or parts.username or parts.password or parts.path or parts.query or parts.fragment:
             raise AgentError('GEOPETTO_URL must be an HTTP(S) origin without credentials or a path', 'config')
         self.url = origin + '/api/v1'
-        user = os.getenv('GEOPETTO_BASIC_AUTH_USER')
-        password = os.getenv('GEOPETTO_BASIC_AUTH_PASSWORD')
+        user = os.getenv('GEOPETTO_BASIC_AUTH_USER') or config.get('GEOPETTO_BASIC_AUTH_USER')
+        password = os.getenv('GEOPETTO_BASIC_AUTH_PASSWORD') or config.get('GEOPETTO_BASIC_AUTH_PASSWORD')
         if (user is None) != (password is None):
             raise AgentError('Both Geopetto Basic Auth environment variables are required', 'auth_config')
         if user is not None and parts.scheme == 'http' and parts.hostname not in ('localhost', '127.0.0.1', '::1'):
