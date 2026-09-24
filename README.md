@@ -46,7 +46,7 @@ After syncing this repository to another machine, run `./install.sh` there once 
 
 Maintain one source per personal skill; app discovery folders contain links, not separate copies. Keep app settings and state in their respective `.codex` and `.claude` folders. Team-owned skills stay in their project repositories, and plugin-owned skills stay managed by their plugins.
 
-**Current implementation:** `codex/skills/<name>/SKILL.md` is the shared source. `bin/install-agent-skills` links each skill into `~/.codex/skills/<name>` and `~/.claude/skills/<name>`. `install.sh` also calls this helper. Only `sync` has been consolidated so far. The repo's `claude/skills/sync` is itself a relative link to the same source.
+**Current implementation:** `codex/skills/<name>/SKILL.md` is the shared source. `bin/install-agent-skills` links each skill into `~/.codex/skills/<name>` and `~/.claude/skills/<name>`. `install.sh` also calls this helper. `sync` and `geopetto` use this layout. The repo's matching `claude/skills/` entries are relative links to the same sources.
 
 **Proposed next step, not yet implemented:** consolidate the remaining personal skills under `skills/` and update the helper accordingly. Verify Codex discovery before switching its installation path to the currently documented `~/.agents/skills`; avoid installing the same skill in both Codex locations. Keep this section and the helper in agreement when migrating.
 
