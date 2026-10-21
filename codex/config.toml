@@ -1,4 +1,4 @@
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 
 notify = ["/Users/davidmcconnell/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
@@ -64,6 +64,9 @@ enabled = true
 enabled = true
 
 [plugins."chrome@openai-bundled"]
+enabled = true
+
+[plugins."code-review@openai-bundled"]
 enabled = true
 
 [projects."/Users/davidmcconnell/code/aigency"]
@@ -396,10 +399,61 @@ trust_level = "trusted"
 [projects."/Users/davidmcconnell/Documents/Codex/2026-09-22/handle-the-follow-up-tasks-from"]
 trust_level = "trusted"
 
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-23/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-23/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-23/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-23/new-realtime-voice-chat-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-23/new-realtime-voice-chat-5"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-23/new-realtime-voice-chat-6"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-24/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-25/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-25/check-same-day-pickup-availability-at"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-25/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/code/fatima_apartment"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-25/new-realtime-voice-chat-3"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-25/new-realtime-voice-chat-4"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-27/new-realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-27/please-use-my-nyu-langone-mychart"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-27/new-realtime-voice-chat-2"]
+trust_level = "trusted"
+
+[projects."/Users/davidmcconnell/Documents/Codex/2026-09-27/get-the-transcript-from-this-video"]
+trust_level = "trusted"
+
 [desktop]
 ambient-suggestions-enabled = false
-appearanceLightCodeThemeId = "gruvbox"
-appearanceDarkCodeThemeId = "ayu"
+appearanceLightCodeThemeId = "solarized"
+appearanceDarkCodeThemeId = "rose-pine"
 preventSleepWhileRunning = true
 keepRemoteControlAwakeWhilePluggedIn = true
 selected-avatar-id = "dewey"
@@ -409,45 +463,54 @@ dock-icon-preference = "codex-system"
 show-context-window-usage = true
 realtimeVoiceScreenContextEnabled = true
 avatar-overlay-mascot-width-px = 146
+appearanceTheme = "dark"
+dictationDictionary = []
 
 [desktop.appearanceLightChromeTheme]
-accent = "#458588"
+accent = "#b58900"
+accentSource = "custom"
 contrast = 45
-ink = "#3c3836"
+ink = "#657b83"
 opaqueWindows = false
-surface = "#fbf1c7"
+surface = "#fdf6e3"
 
 [desktop.appearanceLightChromeTheme.fonts]
+code = '"Jetbrains Mono"'
+ui = "Inter"
 
 [desktop.appearanceLightChromeTheme.semanticColors]
-diffAdded = "#3c3836"
-diffRemoved = "#cc241d"
-skill = "#b16286"
+diffAdded = "#859900"
+diffRemoved = "#dc322f"
+skill = "#d33682"
 
 [desktop.appearanceDarkChromeTheme]
-accent = "#e6b450"
+accent = "#ea9a97"
+accentSource = "custom"
 contrast = 60
-ink = "#bfbdb6"
+ink = "#e0def4"
 opaqueWindows = false
-surface = "#0b0e14"
+surface = "#232136"
 
 [desktop.appearanceDarkChromeTheme.fonts]
 ui = "Satoshi"
 
 [desktop.appearanceDarkChromeTheme.semanticColors]
-diffAdded = "#7fd962"
-diffRemoved = "#ea6c73"
-skill = "#cda1fa"
+diffAdded = "#9ccfd8"
+diffRemoved = "#908caa"
+skill = "#c4a7e7"
 
 [desktop.open-in-target-preferences]
 global = "cursor"
 
 [features]
 js_repl = false
+memories = false
+chronicle = false
 
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+env_vars = ["BROWSER_USE_ACCESS_EXECUTOR_ID", "BROWSER_USE_ACCESS_PIPE_PATH", "BROWSER_USE_ACCESS_VERIFYING_IDENTITY"]
 startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
@@ -456,16 +519,16 @@ NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_n
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/davidmcconnell/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 CODEX_HOME = "/Users/davidmcconnell/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.915.31945"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/davidmcconnell/.codex/plugins/cache/openai-bundled/browser/26.915.31945/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.1016.51333"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/davidmcconnell/.codex/plugins/cache/openai-bundled/browser/26.1016.51333/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/davidmcconnell/.codex/computer-use/Codex Computer Use.app"
-CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
@@ -490,3 +553,16 @@ approval_mode = "approve"
 
 [apps.connector_947e0d954944416db111db556030eea6.tools."google_calendar.create_event"]
 approval_mode = "approve"
+
+[apps.asdk_app_6943b73823548191a9f9216c6790c453.tools."todoist_to_do_list_calendar.update-projects"]
+approval_mode = "approve"
+
+[hooks.state."/Users/davidmcconnell/code/aigency/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:a100c150b56865f5cea61f1adfa5d0b6c38a39ec398151441f7443a0fab82c47"
+
+[hooks.state."/Users/davidmcconnell/code/aigency/.codex/hooks.json:session_start:0:1"]
+trusted_hash = "sha256:8b7a620a95315a90cfbf58c99a02896baab7844bf328ab1fd6b29c1ea84b6942"
+
+[memories]
+generate_memories = false
+use_memories = false

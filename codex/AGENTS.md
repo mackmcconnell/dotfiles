@@ -31,6 +31,18 @@ I keep my work and personal workspaces separate.
 - "Personal workspace" is in `~/code/mack_os`
 - Only use files within the selected workspace for the duration of the conversation unless explicitly told otherwise.
 
+## Tasks and projects
+
+When Mack refers to tasks and projects, the default system
+depends on the active workspace:
+- Work (aigency): Geopetto, using the personal geopetto skill.
+- Personal (mack_os): Todoist.
+
+Apply these defaults inside skills and scheduled workflows too.
+Explicit references to another system take precedence.
+If the selected system is unavailable, report it without
+switching systems.
+
 ## Emails
 You have access to my email through Codex connected Gmail accounts.
 mackmcconnell@gmail.com is my personal address. mack@geostar.ai is my work address.

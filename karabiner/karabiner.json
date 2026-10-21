@@ -16,6 +16,30 @@
                 },
                 "rules": [
                     {
+                        "description": "Mack microphone toggle: Control+Shift+Command+M",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "m",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "shift",
+                                            "command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "/usr/bin/shortcuts run 'Toggle Microphone'",
+                                        "repeat": false
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "description": "CAPS_LOCK : (HYPER) SHIFT+COMMAND+CONTROL or ESCAPE (If Alone)",
                         "manipulators": [
                             {
@@ -99,8 +123,12 @@
                             {
                                 "from": {
                                     "simultaneous": [
-                                        {"key_code": "left_shift"},
-                                        {"key_code": "right_shift"}
+                                        {
+                                            "key_code": "left_shift"
+                                        },
+                                        {
+                                            "key_code": "right_shift"
+                                        }
                                     ],
                                     "simultaneous_options": {
                                         "detect_key_down_uninterruptedly": true,

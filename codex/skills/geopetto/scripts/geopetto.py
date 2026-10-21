@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import base64
 from contextlib import contextmanager
 import fcntl
 import hashlib
@@ -18,8 +17,8 @@ from urllib.parse import quote, urlencode, urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 import uuid
 
-DEFAULT_URL = 'https://geopetto.162.243.239.97.sslip.io'
-CONFIG_KEYS = {'GEOPETTO_URL', 'GEOPETTO_BASIC_AUTH_USER', 'GEOPETTO_BASIC_AUTH_PASSWORD'}
+DEFAULT_URL = 'https://geopetto.geostar.ai'
+CONFIG_KEYS = {'GEOPETTO_URL', 'GEOPETTO_AGENT_TOKEN_MACK'}
 
 
 def local_config() -> dict[str, str]:
@@ -72,13 +71,12 @@ class Client:
         if parts.scheme not in ('http', 'https') or not parts.netloc or parts.username or parts.password or parts.path or parts.query or parts.fragment:
             raise AgentError('GEOPETTO_URL must be an HTTP(S) origin without credentials or a path', 'config')
         self.url = origin + '/api/v1'
-        user = os.getenv('GEOPETTO_BASIC_AUTH_USER') or config.get('GEOPETTO_BASIC_AUTH_USER')
-        password = os.getenv('GEOPETTO_BASIC_AUTH_PASSWORD') or config.get('GEOPETTO_BASIC_AUTH_PASSWORD')
-        if (user is None) != (password is None):
-            raise AgentError('Both Geopetto Basic Auth environment variables are required', 'auth_config')
-        if user is not None and parts.scheme == 'http' and parts.hostname not in ('localhost', '127.0.0.1', '::1'):
+        token = os.getenv('GEOPETTO_AGENT_TOKEN_MACK') or config.get('GEOPETTO_AGENT_TOKEN_MACK')
+        if not token or len(token) < 32:
+            raise AgentError('Configure GEOPETTO_AGENT_TOKEN_MACK in the private Geopetto environment', 'auth_config')
+        if parts.scheme != 'https' and parts.hostname not in ('localhost', '127.0.0.1', '::1'):
             raise AgentError('Geopetto credentials require HTTPS outside localhost', 'auth_config')
-        self.authorization = 'Basic ' + base64.b64encode(f'{user}:{password}'.encode()).decode() if user is not None else None
+        self.authorization = 'Bearer ' + token
         try:
             self.timeout = float(os.getenv('GEOPETTO_AGENT_TIMEOUT', '20'))
             if not 0 < self.timeout <= 300:
@@ -223,11 +221,11 @@ def parser() -> argparse.ArgumentParser:
     create = task_actions.add_parser('create')
     create.add_argument('title')
     create.add_argument('--client-id', required=True, type=int)
-    for option in ('project', 'description', 'due_date', 'priority', 'visibility', 'category', 'status', 'metadata'):
+    for option in ('project', 'description', 'due_date', 'priority', 'visibility', 'category', 'status', 'metadata', 'repeat'):
         create.add_argument('--' + option.replace('_', '-'))
     update = task_actions.add_parser('update')
     update.add_argument('id')
-    for option in ('title', 'description', 'status', 'priority', 'visibility', 'due_date', 'category', 'assignee_name'):
+    for option in ('title', 'description', 'status', 'priority', 'visibility', 'due_date', 'category', 'assignee_name', 'repeat'):
         update.add_argument('--' + option.replace('_', '-'))
     update.add_argument('--clear-due-date', action='store_true')
     update.add_argument('--clear-category', action='store_true')
@@ -274,7 +272,9 @@ def main(argv: list[str] = None) -> None:
             return emit(client.call('GET', '/tasks/' + quote(args.id, safe='')))
         if args.action == 'create':
             body = {'title': args.title, 'client_id': args.client_id,
-                    **supplied(args, ('project', 'description', 'due_date', 'priority', 'visibility', 'category', 'status'))}
+                    **supplied(args, ('project', 'description', 'due_date', 'priority', 'visibility', 'category', 'status', 'repeat'))}
+            if body.get('repeat') == 'none':
+                body['repeat'] = None
             if args.metadata:
                 body['metadata'] = json.loads(args.metadata)
             fingerprint_body = dict(body)
@@ -285,13 +285,17 @@ def main(argv: list[str] = None) -> None:
             destination = None if args.project.lower() == 'none' else args.project
             body = {'project': destination, 'expectedRevision': client.revision('project')}
             return emit(client.call('PUT', '/tasks/' + quote(args.id, safe='') + '/project', body))
-        patch = supplied(args, ('title', 'description', 'status', 'priority', 'visibility', 'due_date', 'category', 'assignee_name')) if args.action == 'update' else {'status': 'completed' if args.action == 'complete' else 'cancelled'}
+        patch = supplied(args, ('title', 'description', 'status', 'priority', 'visibility', 'due_date', 'category', 'assignee_name', 'repeat')) if args.action == 'update' else {'status': 'completed' if args.action == 'complete' else 'cancelled'}
         if args.action == 'update':
             if args.clear_due_date:
                 patch['due_date'] = None
             if args.clear_category:
                 patch['category'] = None
+        if patch.get('repeat') == 'none':
+            patch['repeat'] = None
         body = {'patch': patch, 'expectedRevision': client.revision('task', args.id)}
+        if 'status' in patch:
+            body['expectedWorkspaceRevision'] = client.revision('project')
         if args.action == 'update' and args.metadata_patch:
             body['metadataPatch'] = json.loads(args.metadata_patch)
         if not patch and 'metadataPatch' not in body:
