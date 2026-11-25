@@ -1,9 +1,13 @@
 ---
 name: geopetto
-description: Manage Mack's Geostar work tasks and Geopetto projects from Aigency, including project context, membership, task creation, updates, completion, and history. Use for all Geostar team task and Geopetto project work.
+description: Deprecated. Geostar work tasks and projects now live in Linear. If this skill is invoked or read for task management, use the repo's Linear workflow and connected Linear tools instead. Retained only for explicitly requested legacy Geopetto operations.
 ---
 
 # Geopetto
+
+> **DEPRECATED: Use Linear for all Geostar work tasks and projects.** Read `/Users/davidmcconnell/code/aigency/docs/workflows/linear.md` and use the connected Linear tools. This notice overrides all historical instructions below, including claims that Geopetto owns the task store. Do not create or manage ordinary work tasks in Geopetto, and do not fall back to it if Linear is unavailable. Use the legacy instructions below only when the user explicitly requests a legacy Geopetto operation.
+
+## Historical Geopetto instructions
 
 Use the colocated `scripts/geopetto.py` with Python 3.11 or newer. It uses only the standard library and returns JSON. In Codex, run it at `~/.codex/skills/geopetto/scripts/geopetto.py`; in Claude, use `~/.claude/skills/geopetto/scripts/geopetto.py`. Run `--help`, `tasks --help`, or `projects --help` when you need command syntax.
 

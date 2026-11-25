@@ -5,7 +5,7 @@ notify = ["/Users/davidmcconnell/.codex/computer-use/Codex Computer Use.app/Cont
 approval_policy = "never"
 approvals_reviewer = "user"
 sandbox_mode = "danger-full-access"
-service_tier = "priority"
+service_tier = "default"
 
 [marketplaces.openai-primary-runtime]
 source_type = "local"
@@ -64,9 +64,6 @@ enabled = true
 enabled = true
 
 [plugins."chrome@openai-bundled"]
-enabled = true
-
-[plugins."code-review@openai-bundled"]
 enabled = true
 
 [projects."/Users/davidmcconnell/code/aigency"]
@@ -450,6 +447,9 @@ trust_level = "trusted"
 [projects."/Users/davidmcconnell/Documents/Codex/2026-09-27/get-the-transcript-from-this-video"]
 trust_level = "trusted"
 
+[projects."/Users/davidmcconnell/code/pepper"]
+trust_level = "trusted"
+
 [desktop]
 ambient-suggestions-enabled = false
 appearanceLightCodeThemeId = "solarized"
@@ -458,13 +458,13 @@ preventSleepWhileRunning = true
 keepRemoteControlAwakeWhilePluggedIn = true
 selected-avatar-id = "dewey"
 conversationDetailMode = "STEPS_COMMANDS"
-followUpQueueMode = "queue"
 dock-icon-preference = "codex-system"
 show-context-window-usage = true
 realtimeVoiceScreenContextEnabled = true
 avatar-overlay-mascot-width-px = 146
 appearanceTheme = "dark"
 dictationDictionary = []
+migratedFollowUpQueueToSteer = true
 
 [desktop.appearanceLightChromeTheme]
 accent = "#b58900"
@@ -510,7 +510,7 @@ chronicle = false
 [mcp_servers.node_repl]
 args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
-env_vars = ["BROWSER_USE_ACCESS_EXECUTOR_ID", "BROWSER_USE_ACCESS_PIPE_PATH", "BROWSER_USE_ACCESS_VERIFYING_IDENTITY"]
+env_vars = ["BROWSER_USE_ACCESS_EXECUTOR_ID", "BROWSER_USE_ACCESS_PIPE_PATH", "BROWSER_USE_ACCESS_VERIFYING_IDENTITY", "CODEX_APP_RUNTIME_CLI_PATH"]
 startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
@@ -525,10 +525,11 @@ NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.1016.51333"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/davidmcconnell/.codex/plugins/cache/openai-bundled/browser/26.1016.51333/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.1120.41243"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/davidmcconnell/.codex/plugins/cache/openai-bundled/browser/26.1120.41243/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/davidmcconnell/.codex/computer-use/Codex Computer Use.app"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
+NODE_REPL_LAZY_TRUSTED_WORKER = "0"
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"

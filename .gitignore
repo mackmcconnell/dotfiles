@@ -8,3 +8,7 @@ claude/config/last30days/
 
 # Claude-managed synced skill bundles
 claude/skills/synced/
+
+# Local skill trash and Python bytecode caches
+claude/skills/.trash/
+__pycache__/
