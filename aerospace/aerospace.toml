@@ -54,7 +54,7 @@ outer.bottom = 8
     ctrl-shift-cmd-t = 'workspace 4'
     ctrl-shift-cmd-y = 'workspace 5'
     ctrl-shift-cmd-u = 'workspace 6'
-    ctrl-shift-cmd-i = 'workspace 7'
+    ctrl-shift-cmd-i = 'workspace --auto-back-and-forth 7'
     ctrl-shift-cmd-o = 'workspace 8'
     ctrl-shift-cmd-p = 'workspace 9'
 
